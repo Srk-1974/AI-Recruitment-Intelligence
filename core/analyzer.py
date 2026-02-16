@@ -106,7 +106,7 @@ class HRAnalyzer:
                 }
             )
 
-    def analyze(self, resume_text: str, jd_text: str, model_name: str = None, temperature: float = 0.1, max_tokens: int = 2000, provider: str = "Ollama", api_key: str = None, ollama_url: str = None, azure_config: dict = None) -> EvaluationResult:
+    def analyze(self, resume_text: str, jd_text: str, model_name: str = None, temperature: float = 0.1, max_tokens: int = 2000, provider: str = "Ollama", api_key: str = None, ollama_url: str = None, azure_config: dict = None, **kwargs) -> EvaluationResult:
         """Sends the extraction task to the LLM and parses the result."""
         target_model = model_name if model_name else self.llm.model
         prompt = self.prompt_template.format(resume_text=resume_text, jd_text=jd_text)
@@ -174,7 +174,7 @@ class HRAnalyzer:
                 interview_questions=["Please check your AI configuration."]
             )
 
-    def chat(self, message: str, history: list, model_name: str = "llama3.2", temperature: float = 0.7, max_tokens: int = 1000, provider: str = "Ollama", api_key: str = None, ollama_url: str = None, azure_config: dict = None) -> str:
+    def chat(self, message: str, history: list, model_name: str = "llama3.2", temperature: float = 0.7, max_tokens: int = 1000, provider: str = "Ollama", api_key: str = None, ollama_url: str = None, azure_config: dict = None, **kwargs) -> str:
         """General purpose chat with system context about the HR app."""
         system_prompt = """
         You are the 'HR Intelligence Assistant', a helpful AI built to explain and assist with the Intelligent HR Recruitment Assistant application.
