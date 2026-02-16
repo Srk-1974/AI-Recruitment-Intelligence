@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+streamlit
+python-docx
+pypdf
+pydantic
+langchain
+langchain-ollama
+langchain-core
+langchain-community
+python-multipart
+python-dotenv
+pandas
+requests
+langchain-openai
+langchain-groq
