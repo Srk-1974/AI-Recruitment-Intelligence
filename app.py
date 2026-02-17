@@ -617,7 +617,7 @@ with tabs[4]:
     # --- PROMOTED ENGINE SETTINGS (Now in Tabs instead of Sidebar) ---
     st.subheader("🛡️ Recruitment Intelligence Control Center")
     st.markdown("""
-        <div class="glass-card" style="padding: 15px; border-left: 5px solid #4ade80; margin-bottom: 20px;">
+        <div class="glass-card" style="padding: 15px; border-left: 5px solid #a78bfa; margin-bottom: 20px;">
             <h4 style="margin:0;">⚙️ Engine Configuration</h4>
             <p style="margin:5px 0 0 0; font-size: 0.9rem; opacity: 0.8;">
                 Manage AI providers, API keys, and model parameters securely.
@@ -655,7 +655,7 @@ with tabs[4]:
                 st.rerun()
         
         # --- Actual Settings UI (Locked behind password) ---
-        st.markdown("### 🤖 Model & Provider Selection")
+        st.markdown("### 💠 Model & Provider Selection")
         # Initialize some vars
         available_models = ["llama3.2"]
 
