@@ -88,16 +88,16 @@ def check_password():
                             margin: 0;
                             font-size: 36px;
                             font-weight: 800;
-                            color: #ffffff;
+                            color: #facc15;
                             letter-spacing: 2px;
                             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
                         ">BHADRADRI</h1>
                         <p style="
                             margin: 5px 0 0 0;
                             font-size: 13px;
-                            color: rgba(255, 255, 255, 0.9);
+                            color: #fef08a;
                             letter-spacing: 4px;
-                            font-weight: 300;
+                            font-weight: 500;
                         ">TECHNOLOGY INC.</p>
                     </div>
                 </div>
@@ -269,15 +269,15 @@ with st.sidebar:
                             margin: 0;
                             font-size: 13px;
                             font-weight: 800;
-                            color: #ffffff !important;
+                            color: #facc15 !important;
                             letter-spacing: 0.8px;
                         ">BHADRADRI</p>
                         <p style="
                             margin: 0;
                             font-size: 7px;
-                            color: rgba(255, 255, 255, 0.95) !important;
+                            color: #fef08a !important;
                             letter-spacing: 2px;
-                            font-weight: 400;
+                            font-weight: 600;
                         ">TECHNOLOGY INC.</p>
                     </div>
                 </div>
