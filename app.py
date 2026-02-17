@@ -144,12 +144,12 @@ st.markdown("""
     }
 
     .main {
-        background-color: #fefce8;
+        background-color: #ffffff;
         color: #1e293b;
     }
 
     .stApp {
-        background-color: #fefce8;
+        background-color: #ffffff;
     }
 
     /* Selection Color */
