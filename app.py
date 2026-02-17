@@ -69,7 +69,7 @@ def check_password():
                 background: linear-gradient(135deg, #4c1d95, #6d28d9);
                 padding: 20px 50px;
                 border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(109, 40, 217, 0.4);
+                box-shadow: 0 8px 24px rgba(109, 40, 217, 0.2);
                 display: inline-block;
             ">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
@@ -88,26 +88,26 @@ def check_password():
                             margin: 0;
                             font-size: 36px;
                             font-weight: 800;
-                            color: #a78bfa;
+                            color: #ffffff;
                             letter-spacing: 2px;
-                            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
                         ">BHADRADRI</h1>
                         <p style="
                             margin: 5px 0 0 0;
                             font-size: 13px;
-                            color: rgba(255, 255, 255, 0.95);
+                            color: rgba(255, 255, 255, 0.9);
                             letter-spacing: 4px;
                             font-weight: 300;
                         ">TECHNOLOGY INC.</p>
                     </div>
                 </div>
             </div>
-            <h2 style="margin-top: 25px; font-size: 24px; color: #c4b5fd;">HR Intelligence Assistant</h2>
-            <p style="opacity: 0.6; font-size: 14px;">© 2026 Bhadradri Technologies Inc. All Rights Reserved</p>
+            <h2 style="margin-top: 25px; font-size: 24px; color: #5b21b6;">HR Intelligence Assistant</h2>
+            <p style="opacity: 0.6; font-size: 14px; color: #1e293b;">© 2026 Bhadradri Technologies Inc. All Rights Reserved</p>
         </div>
-        <div class="glass-card" style="max-width: 400px; margin: 30px auto;">
-            <h2 style="text-align: center;">🔑 Recruitment Intelligence Portal</h2>
-            <p style="text-align: center; opacity: 0.7;">Production Environment Secure Login</p>
+        <div class="glass-card" style="max-width: 400px; margin: 30px auto; background: white;">
+            <h2 style="text-align: center; color: #1e293b;">🔑 Recruitment Intelligence Portal</h2>
+            <p style="text-align: center; opacity: 0.7; color: #1e293b;">Production Environment Secure Login</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -144,28 +144,35 @@ st.markdown("""
     }
 
     .main {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #f8fafc;
+        background-color: #fefce8;
+        color: #1e293b;
     }
 
     .stApp {
-        background: transparent;
+        background-color: #fefce8;
     }
 
-    /* Glassmorphism containers */
+    /* Selection Color */
+    ::selection {
+        background: #fde68a;
+        color: #1e293b;
+    }
+
+    /* Glassmorphism containers updated for light theme */
     .glass-card {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.6);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
         transition: all 0.3s ease;
+        color: #1e293b;
     }
     
     .glass-card:hover {
-        border-color: rgba(167, 139, 250, 0.4);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        border-color: rgba(139, 92, 246, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
     }
 
     /* Custom Tags */
@@ -175,16 +182,16 @@ st.markdown("""
         margin: 4px;
         border-radius: 20px;
         background: rgba(139, 92, 246, 0.1);
-        color: #a78bfa;
-        border: 1px solid rgba(167, 139, 250, 0.3);
+        color: #6d28d9;
+        border: 1px solid rgba(139, 92, 246, 0.2);
         font-size: 0.85rem;
         font-weight: 600;
     }
     
     .missing-tag {
         background: rgba(239, 68, 68, 0.1);
-        color: #f87171;
-        border-color: rgba(248, 113, 113, 0.3);
+        color: #dc2626;
+        border-color: rgba(220, 38, 38, 0.2);
     }
 
     /* Buttons */
@@ -202,23 +209,27 @@ st.markdown("""
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
     }
 
     /* Headers */
     h1 {
-        background: linear-gradient(90deg, #a78bfa, #c4b5fd);
+        background: linear-gradient(90deg, #5b21b6, #7c3aed);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 800 !important;
     }
     
-    /* Better Sidebar Visibility */
+    /* Better Sidebar Visibility for Light Theme */
     [data-testid="stSidebar"] {
-        background-color: #0f172a !important;
-        border-right: 1px solid rgba(167, 139, 250, 0.2);
+        background-color: #fef9c3 !important;
+        border-right: 1px solid rgba(139, 92, 246, 0.2);
     }
     
+    [data-testid="stSidebar"] * {
+        color: #1e293b !important;
+    }
+
     /* Ensure sidebar toggle button is always visible */
     [data-testid="stSidebarNav"] {
         background-color: transparent !important;
