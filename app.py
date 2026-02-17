@@ -213,10 +213,17 @@ st.markdown("""
         font-weight: 800 !important;
     }
     
-    .sidebar .sidebar-content {
-        background: #0f172a;
+    /* Better Sidebar Visibility */
+    [data-testid="stSidebar"] {
+        background-color: #0f172a !important;
+        border-right: 1px solid rgba(167, 139, 250, 0.2);
     }
     
+    /* Ensure sidebar toggle button is always visible */
+    [data-testid="stSidebarNav"] {
+        background-color: transparent !important;
+    }
+
     /* Hide Streamlit Branding and Menu */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
