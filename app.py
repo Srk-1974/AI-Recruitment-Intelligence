@@ -213,10 +213,9 @@ st.markdown("""
     }
 
     /* Headers */
+    /* Headers */
     h1 {
-        background: linear-gradient(90deg, #5b21b6, #7c3aed);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #5b21b6;
         font-weight: 800 !important;
     }
     
@@ -226,7 +225,7 @@ st.markdown("""
         border-right: 1px solid rgba(139, 92, 246, 0.2);
     }
     
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p:not(.logo-exception) {
         color: #1e293b !important;
     }
 
@@ -265,19 +264,21 @@ with st.sidebar:
                         <span style="font-size: 16px;">🏹</span>
                     </div>
                     <div style="text-align: left;">
-                        <p style="
+                        <p class="logo-exception" style="
                             margin: 0;
                             font-size: 13px;
-                            font-weight: 800;
+                            font-weight: 900;
                             color: #facc15 !important;
                             letter-spacing: 0.8px;
+                            -webkit-text-fill-color: #facc15 !important;
                         ">BHADRADRI</p>
-                        <p style="
+                        <p class="logo-exception" style="
                             margin: 0;
                             font-size: 7px;
                             color: #fef08a !important;
                             letter-spacing: 2px;
                             font-weight: 600;
+                            -webkit-text-fill-color: #fef08a !important;
                         ">TECHNOLOGY INC.</p>
                     </div>
                 </div>
