@@ -209,7 +209,15 @@ st.markdown("""
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+
+    /* Force Sidebar Button Visibility */
+    [data-testid="stSidebar"] .stButton>button {
+        color: white !important;
+        background: linear-gradient(90deg, #6d28d9 0%, #4c1d95 100%) !important;
+        font-weight: 800 !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
 
     /* Headers */
@@ -299,14 +307,12 @@ with st.sidebar:
     st.info("⚙️ **Engine Settings** have moved to the **Settings** tab.")
     
     st.markdown("### 🚑 System Tools")
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("🧼 Clear Cache", use_container_width=True):
-            st.cache_resource.clear()
-            st.toast("Cache Cleared!")
-    with c2:
-        if st.button("🔥 Health Check", use_container_width=True):
-            st.info(f"Connected to: {st.session_state.current_provider}")
+    if st.button("🧼 Clear Cache", use_container_width=True):
+        st.cache_resource.clear()
+        st.toast("Cache Cleared!")
+    
+    if st.button("🔥 Health Check", use_container_width=True):
+        st.info(f"Connected to: {st.session_state.current_provider}")
 
 # Initialize Engine Variables at top level (accessible to all tabs)
 # Use session state to persist choices
