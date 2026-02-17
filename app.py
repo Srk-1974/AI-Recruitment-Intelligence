@@ -11,7 +11,7 @@ from core.models import AnalysisRequest, ChatRequest
 IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 
 # Page Config
-st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="🔸", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="🥭", initial_sidebar_state="expanded")
 
 # Version: 1.7.2 - Full Parameter Fix (Sync: 2026-02-16)
 # Initialize Session States
@@ -352,7 +352,7 @@ if provider_key == "AzureOpenAI":
 else:
     api_key_val = st.session_state.api_config.get(provider_key)
 
-st.markdown('# <span style="color: #d4af37;">❖</span> AI Recruitment Intelligence Portal', unsafe_allow_html=True)
+st.markdown('# 🥭 AI Recruitment Intelligence Portal', unsafe_allow_html=True)
 st.markdown("### Professional HR Candidate Analysis & Ranking")
 st.markdown("---")
 
@@ -598,7 +598,7 @@ with tabs[2]:
             st.rerun()
 
 with tabs[3]:
-    st.markdown('### <span style="color: #d4af37;">❖</span> Recruitment ChatBot', unsafe_allow_html=True)
+    st.markdown('### 🥭 Recruitment ChatBot', unsafe_allow_html=True)
     st.markdown("---")
     
     # Initialize chat history
@@ -685,7 +685,7 @@ with tabs[4]:
                 st.rerun()
         
         # --- Actual Settings UI (Locked behind password) ---
-        st.markdown('### <span style="color: #d4af37;">❖</span> Model & Provider Selection', unsafe_allow_html=True)
+        st.markdown('### 🥭 Model & Provider Selection', unsafe_allow_html=True)
         # Initialize some vars
         available_models = ["llama3.2"]
 
