@@ -11,7 +11,7 @@ from core.models import AnalysisRequest, ChatRequest
 IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 
 # Page Config
-st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="💠")
+st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="💠", initial_sidebar_state="expanded")
 
 # Version: 1.7.2 - Full Parameter Fix (Sync: 2026-02-16)
 # Initialize Session States
