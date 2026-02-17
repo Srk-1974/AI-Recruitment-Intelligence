@@ -213,6 +213,81 @@ st.markdown("""
     }
 
 
+    /* Beautiful Pill-Styled Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #f8fafc;
+        padding: 8px;
+        border-radius: 50px;
+        margin-bottom: 25px;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 45px;
+        border-radius: 25px !important;
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0 24px !important;
+        transition: all 0.3s ease !important;
+        color: #64748b !important;
+        font-weight: 600 !important;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3) !important;
+    }
+
+    .stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {
+        background-color: rgba(124, 58, 237, 0.05) !important;
+        color: #7c3aed !important;
+    }
+
+    /* Subheader with gradient underline */
+    .tab-subheader {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 8px;
+    }
+    .tab-subheader::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #7c3aed, #c4b5fd);
+        border-radius: 2px;
+    }
+
+    /* ChatBot Message Bubbles */
+    .chat-bubble {
+        padding: 12px 18px;
+        border-radius: 15px;
+        margin: 5px 0;
+        max-width: 85%;
+        line-height: 1.5;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .user-bubble {
+        background: #f1f5f9;
+        color: #1e293b;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+    }
+    .assistant-bubble {
+        background: #ffffff;
+        color: #1e293b;
+        border-left: 4px solid #7c3aed;
+        border-bottom-left-radius: 2px;
+    }
+
     /* Headers */
     /* Headers */
     h1 {
@@ -379,8 +454,9 @@ st.markdown("---")
 tabs = st.tabs(["📄 Single Evaluation", "👥 Batch Ranking", "📜 Analysis History", "💬 Recruitment ChatBot", "⚙️ Admin Settings"])
 
 with tabs[0]:
-    st.subheader("Single Resume Evaluation")
-    col1, col2 = st.columns([1, 1])
+    st.markdown('<h2 class="tab-subheader">📄 Single Resume Evaluation</h2>', unsafe_allow_html=True)
+    st.write("")
+    col1, col2 = st.columns([1, 1], gap="large")
     
     with col1:
         jd_input = st.text_area("Job Description", height=300, placeholder="Paste the Job Description here...")
@@ -428,23 +504,23 @@ with tabs[0]:
                     m1, m2, m3 = st.columns(3)
                     with m1:
                         st.markdown(f"""
-                        <div class="glass-card">
-                            <p style="margin:0; opacity:0.7;">Match Confidence</p>
-                            <h1 style="margin:0; font-size: 3rem;">{result.match_percentage}%</h1>
+                        <div class="glass-card" style="border-top: 4px solid #7c3aed;">
+                            <p style="margin:0; opacity:0.7; font-weight:600;">Match Confidence</p>
+                            <h1 style="margin:0; font-size: 3rem; color: #7c3aed;">{result.match_percentage}%</h1>
                         </div>
                         """, unsafe_allow_html=True)
                     with m2:
                         st.markdown(f"""
-                        <div class="glass-card">
-                            <p style="margin:0; opacity:0.7;">Recommended Rank</p>
-                            <h2 style="margin:0; color: #38bdf8;">{result.ranking}</h2>
+                        <div class="glass-card" style="border-top: 4px solid #38bdf8;">
+                            <p style="margin:0; opacity:0.7; font-weight:600;">Recommended Rank</p>
+                            <h1 style="margin:0; font-size: 3rem; color: #0284c7;">{result.ranking}</h1>
                         </div>
                         """, unsafe_allow_html=True)
                     with m3:
                         st.markdown(f"""
-                        <div class="glass-card">
-                            <p style="margin:0; opacity:0.7;">Skills Match</p>
-                            <h2 style="margin:0;">{len(result.matched_skills)} Found</h2>
+                        <div class="glass-card" style="border-top: 4px solid #10b981;">
+                            <p style="margin:0; opacity:0.7; font-weight:600;">Skills Match</p>
+                            <h1 style="margin:0; font-size: 3rem; color: #059669;">{len(result.matched_skills)}</h1>
                         </div>
                         """, unsafe_allow_html=True)
                     
@@ -497,8 +573,9 @@ with tabs[0]:
                     st.info("💡 **Tip**: If using a local LLM, make sure the model is pulled and your laptop isn't sleeping.")
 
 with tabs[1]:
-    st.subheader("Batch Candidate Ranking")
-    batch_jd = st.text_area("Job Description for Ranking", height=200, key="batch_jd")
+    st.markdown('<h2 class="tab-subheader">👥 Batch Candidate Ranking</h2>', unsafe_allow_html=True)
+    st.write("")
+    batch_jd = st.text_area("Job Description for Ranking", height=200, key="batch_jd", placeholder="What are you looking for in this candidates batch?")
     batch_resumes = st.file_uploader("Upload Multiple Resumes", type=["pdf", "docx"], accept_multiple_files=True)
     
     if st.button("Rank All Candidates"):
@@ -541,18 +618,18 @@ with tabs[1]:
                     st.warning(f"Could not process {res.name}: {e}")
                 progress_bar.progress((i + 1) / len(batch_resumes))
             
-            if results:
+                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+                st.subheader("📊 Ranking Analytics")
                 df = pd.DataFrame(results)
                 # Sort by score
                 df = df.sort_values(by="match_percentage", ascending=False)
-                
-                st.subheader("Ranking Results")
                 st.dataframe(df[['candidate_name', 'match_percentage', 'ranking', 'candidate_summary']], use_container_width=True)
-                
                 st.bar_chart(df.set_index('candidate_name')['match_percentage'])
+                st.markdown('</div>', unsafe_allow_html=True)
 
 with tabs[2]:
-    st.subheader("📜 Evaluation History")
+    st.markdown('<h2 class="tab-subheader">📜 Evaluation History</h2>', unsafe_allow_html=True)
+    st.write("")
     st.markdown("---")
     
     if not st.session_state.eval_history:
@@ -617,17 +694,21 @@ with tabs[2]:
             st.rerun()
 
 with tabs[3]:
-    st.markdown('### ☀️ Recruitment ChatBot', unsafe_allow_html=True)
+    st.markdown('<h2 class="tab-subheader">☀️ Recruitment ChatBot</h2>', unsafe_allow_html=True)
+    st.write("")
     st.markdown("---")
     
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Display chat messages from history on app rerun
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        role_class = "user-bubble" if message["role"] == "user" else "assistant-bubble"
+        st.markdown(f"""
+            <div class="chat-bubble {role_class}">
+                {message["content"]}
+            </div>
+        """, unsafe_allow_html=True)
 
     # React to user input
     if prompt := st.chat_input("Ask me anything about the app or recruitment..."):
@@ -650,9 +731,12 @@ with tabs[3]:
                     azure_config=azure_config
                 )
                 
-                # Display assistant response in chat message container
-                with st.chat_message("assistant"):
-                    st.markdown(assistant_response)
+                # Display assistant response
+                st.markdown(f"""
+                    <div class="chat-bubble assistant-bubble">
+                        {assistant_response}
+                    </div>
+                """, unsafe_allow_html=True)
                 # Add assistant response to chat history
                 st.session_state.messages.append({"role": "assistant", "content": assistant_response})
             except Exception as e:
@@ -663,8 +747,8 @@ with tabs[3]:
         st.rerun()
 
 with tabs[4]:
-    # --- PROMOTED ENGINE SETTINGS (Now in Tabs instead of Sidebar) ---
-    st.subheader("🛡️ Recruitment Intelligence Control Center")
+    st.markdown('<h2 class="tab-subheader">🛡️ Intelligence Control Center</h2>', unsafe_allow_html=True)
+    st.write("")
     st.markdown("""
         <div class="glass-card" style="padding: 15px; border-left: 5px solid #a78bfa; margin-bottom: 20px;">
             <h4 style="margin:0;">⚙️ Engine Configuration</h4>
