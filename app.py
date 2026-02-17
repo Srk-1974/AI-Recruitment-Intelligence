@@ -273,204 +273,61 @@ with st.sidebar:
     if st.button("🚪 Logout"):
         st.session_state["password_correct"] = False
         st.rerun()
-    # Engine Settings Section
+    # Note about Engine Settings
     st.markdown("---")
-    st.markdown("### ⚙️ Engine Settings")
-    
-    # Initialize settings variables with defaults so app doesn't crash when locked
-    provider = "Ollama (Local PC)"
-    selected_model = "llama3.2"
-    provider_key = "Ollama"
-    api_key_val = None
-    ollama_url = "http://localhost:11434"
-    azure_config = None
-    temp_val = 0.1
-    top_p_val = 2000
-    available_models = ["llama3.2"]
+    st.info("⚙️ **Engine Settings** have moved to the **Settings** tab in the main portal for easier access.")
+    st.caption("Unlock with Admin Password there to change models or API keys.")
 
-    if "settings_unlocked" not in st.session_state:
-        st.session_state.settings_unlocked = False
-    
-    ADMIN_PASSWORD = "admin123"  # Default admin password
-    
-    if not st.session_state.settings_unlocked:
-        st.warning("🔒 Engine Settings are locked.")
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            admin_pass = st.text_input("Admin Password", type="password", key="admin_password_input", label_visibility="collapsed")
-        with col2:
-            if st.button("🔓 Unlock", use_container_width=True):
-                if admin_pass == ADMIN_PASSWORD:
-                    st.session_state.settings_unlocked = True
-                    st.success("Settings unlocked!")
-                    st.rerun()
-                else:
-                    st.error("Wrong!")
-        st.info("Unlock to change AI models or API keys.")
-    else:
-        # Lock button (when unlocked)
-        if st.button("🔒 Lock Settings", use_container_width=True):
-            st.session_state.settings_unlocked = False
-            st.rerun()
-        
-        provider = st.radio("AI Provider", ["Ollama (Local PC)", "Groq", "OpenAI", "Sarvam AI", "DeepSeek", "Gemini", "Azure OpenAI (Copilot)"], horizontal=True)
-        
-        # Helper for API Key UI
-        def render_api_key_ui(provider_name, label):
-            current_key = st.session_state.api_config.get(provider_name, "")
-            input_key = f"{provider_name}_input"
-            if input_key not in st.session_state:
-                st.session_state[input_key] = current_key
-            visibility_key = f"{provider_name}_show"
-            if visibility_key not in st.session_state:
-                st.session_state[visibility_key] = False
-            input_type = "default" if st.session_state[visibility_key] else "password"
-            user_input = st.text_input(label, type=input_type, key=input_key, placeholder="Enter API Key")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                if st.button("💾 Save", key=f"save_{provider_name}", use_container_width=True):
-                    if user_input:
-                        st.session_state.api_config[provider_name] = user_input
-                        save_config(st.session_state.api_config)
-                        st.toast(f"{provider_name} Key Saved!", icon="✅")
-                        st.rerun()
-            with col2:
-                if st.button("🗑️ Delete", key=f"del_{provider_name}", use_container_width=True):
-                    if provider_name in st.session_state.api_config:
-                        del st.session_state.api_config[provider_name]
-                        save_config(st.session_state.api_config)
-                        del st.session_state[input_key]
-                        st.toast(f"{provider_name} Key Deleted!", icon="🗑️")
-                        st.rerun()
-            with col3:
-                button_label = "🙈 Hide" if st.session_state[visibility_key] else "👁️ Show"
-                if st.button(button_label, key=f"show_{provider_name}", use_container_width=True):
-                    st.session_state[visibility_key] = not st.session_state[visibility_key]
-                    st.rerun()
-            return user_input
+# Initialize Engine Variables at top level (accessible to all tabs)
+# Use session state to persist choices
+if "current_provider" not in st.session_state:
+    st.session_state.current_provider = "Ollama (Local PC)"
+if "current_model" not in st.session_state:
+    st.session_state.current_model = "llama3.2"
+if "current_temp" not in st.session_state:
+    st.session_state.current_temp = 0.1
+if "current_max_tokens" not in st.session_state:
+    st.session_state.current_max_tokens = 2000
 
-        if provider == "Ollama (Local PC)":
-            provider_key = "Ollama"
-            raw_url = st.text_input("Local Ollama URL", value="http://localhost:11434", help="Use your Ngrok URL if connecting your laptop to this portal.")
-            ollama_url = raw_url.strip().rstrip('/')
-            
-            if IS_CLOUD and "localhost" in ollama_url:
-                st.warning("⚠️ Localhost not accessible from Web.")
-                st.info("💡 **How to connect your laptop?** \n1. Run: `ngrok http 11434 --host-header=\"localhost:11434\"` \n2. Paste the `https://xxxx.ngrok-free.app` URL here.")
-                
-            # Dynamic Model Loading for Ollama
-            try:
-                available_models = analyzer.get_available_models(custom_url=ollama_url)
-                if not available_models or available_models == ["llama3.2"]:
-                    st.caption("⚠️ Using default model list (Check connection)")
-            except Exception as e:
-                st.error(f"Ollama Error: {e}")
-                available_models = ["llama3.2"]
-        
-        elif provider == "Groq":
-            provider_key = "Groq"
-            available_models = ["llama-3.3-70b-versatile", "mixtral-8x7b-32768", "deepseek-r1-distill-llama-70b"]
-            st.caption("Groq API Key")
-            api_key_val = render_api_key_ui("Groq", "Groq API Key")
-        
-        elif provider == "OpenAI":
-            provider_key = "OpenAI"
-            available_models = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"]
-            st.caption("OpenAI API Key")
-            api_key_val = render_api_key_ui("OpenAI", "OpenAI API Key")
+# Set local variables based on session state/config
+provider = st.session_state.current_provider
+selected_model = st.session_state.current_model
+temp_val = st.session_state.current_temp
+top_p_val = st.session_state.current_max_tokens
+ollama_url = "http://localhost:11434" # Default
+api_key_val = None
+azure_config = None
+provider_key = "Ollama"
 
-        elif provider == "Sarvam AI":
-            provider_key = "SarvamAI"
-            available_models = ["sarvam-2b-v0.5", "yoddha-2b", "openhathi-7b-hi-v0.1-base"] 
-            st.caption("Sarvam AI API Key (Supports Indian languages)")
-            api_key_val = render_api_key_ui("SarvamAI", "Sarvam API Key")
+# Map provider display name to key
+provider_map = {
+    "Ollama (Local PC)": "Ollama",
+    "Groq": "Groq",
+    "OpenAI": "OpenAI",
+    "Sarvam AI": "SarvamAI",
+    "DeepSeek": "DeepSeek",
+    "Gemini": "Gemini",
+    "Azure OpenAI (Copilot)": "AzureOpenAI"
+}
+provider_key = provider_map.get(provider, "Ollama")
 
-        elif provider == "DeepSeek":
-            provider_key = "DeepSeek"
-            available_models = ["deepseek-chat", "deepseek-reasoner"]
-            st.caption("DeepSeek API Key")
-            api_key_val = render_api_key_ui("DeepSeek", "DeepSeek API Key")
-        
-        elif provider == "Gemini":
-            provider_key = "Gemini"
-            available_models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-1.0-pro"]
-            st.caption("Google Gemini API Key")
-            api_key_val = render_api_key_ui("Gemini", "Gemini API Key")
-
-        elif provider == "Azure OpenAI (Copilot)":
-            provider_key = "AzureOpenAI"
-            available_models = ["gpt-4", "gpt-3.5-turbo"] # User defines deployment, these are just placeholders/hints if needed, but actually model name is deployment name usually. 
-            # For Azure, model selection is often 'Deployment Name'. 
-            # We can let user pick a dummy model or type it? 
-            # Actually in Azure, the 'model_name' param usually maps to deployment name in LangChain if not specified otherwise.
-            # But `AzureChatOpenAI` takes `azure_deployment`. 
-            
-            st.markdown("#### Azure OpenAI Settings")
-            
-            # We need specific UI for Azure (Endpoint, Key, Deployment, Version)
-            # We'll use a prefix 'azure_' for config keys
-            
-            # Load config
-            az_endpoint = st.session_state.api_config.get("azure_endpoint", "")
-            az_key = st.session_state.api_config.get("azure_key", "")
-            az_deployment = st.session_state.api_config.get("azure_deployment", "")
-            az_version = st.session_state.api_config.get("azure_version", "2024-02-15-preview")
-            
-            # Inputs
-            c1, c2 = st.columns(2)
-            with c1:
-                ui_az_endpoint = st.text_input("Endpoint URL", value=az_endpoint)
-                ui_az_deployment = st.text_input("Deployment Name", value=az_deployment)
-            with c2:
-                ui_az_key = st.text_input("API Key", value=az_key, type="password")
-                ui_az_version = st.text_input("API Version", value=az_version)
-                
-            if st.button("💾 Save Azure Settings", use_container_width=True):
-                st.session_state.api_config["azure_endpoint"] = ui_az_endpoint
-                st.session_state.api_config["azure_key"] = ui_az_key
-                st.session_state.api_config["azure_deployment"] = ui_az_deployment
-                st.session_state.api_config["azure_version"] = ui_az_version
-                save_config(st.session_state.api_config)
-                st.toast("Azure Settings Saved!", icon="✅")
-                st.rerun()
-
-            # Construct azure_config for analyzer
-            azure_config = {
-                "endpoint": ui_az_endpoint,
-                "api_key": ui_az_key,
-                "deployment_name": ui_az_deployment,
-                "api_version": ui_az_version
-            }
-            
-            # For Azure, the 'model list' is technically just the deployment name. 
-            # To keep UI consistent, we can just show the deployment name as the single 'model'.
-            available_models = [ui_az_deployment] if ui_az_deployment else ["Enter Deployment Name"]
-
-        selected_model = st.selectbox(
-            "AI Model", 
-            available_models,
-            index=0,
-            key=f"selected_model_{provider_key}"
-        )
-        
-        st.markdown("### 🛠 Advanced Parameters")
-        temp_val = 0.1 # Fixed optimal temperature for focused analysis
-        top_p_val = st.slider("Max Tokens", 100, 4000, 2000, 100)
-        
-        st.info(f"AI Provider: {provider}")
-        st.markdown("---")
-        st.markdown("### 📊 Active Analysis")
-        st.caption("Status: Ready to analyze")
-        if st.button("🧹 Clear App Cache"):
-            st.cache_resource.clear()
-            st.rerun()
+# Load existing keys/configs for active provider
+if provider_key == "AzureOpenAI":
+    azure_config = {
+        "endpoint": st.session_state.api_config.get("azure_endpoint", ""),
+        "api_key": st.session_state.api_config.get("azure_key", ""),
+        "deployment_name": st.session_state.api_config.get("azure_deployment", ""),
+        "api_version": st.session_state.api_config.get("azure_version", "2024-02-15-preview")
+    }
+else:
+    api_key_val = st.session_state.api_config.get(provider_key)
 
 st.markdown("# 🤖 AI Recruitment Intelligence Portal")
 st.markdown("### Professional HR Candidate Analysis & Ranking")
 st.markdown("---")
 
 # Tabs Configuration
-tabs = st.tabs(["Single Evaluation", "Batch Ranking", "📜 Analysis History", "Recruitment ChatBot", "Settings"])
+tabs = st.tabs(["📄 Single Evaluation", "👥 Batch Ranking", "📜 Analysis History", "💬 Recruitment ChatBot", "⚙️ Admin Settings"])
 
 with tabs[0]:
     st.subheader("Single Resume Evaluation")
@@ -757,122 +614,177 @@ with tabs[3]:
         st.rerun()
 
 with tabs[4]:
-    st.subheader("System Health")
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.write(f"Active Provider: **{provider_key}**")
-    if st.button("🔥 Run Health Check"):
-        if provider_key == "Ollama":
-            try:
-                # Check if current Ollama URL is reachable with ngrok bypass
-                headers = {
-                    'ngrok-skip-browser-warning': 'true',
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-                }
-                response = requests.get(f"{ollama_url}/api/tags", timeout=5, headers=headers)
-                if response.status_code == 200:
-                    models = [m['name'] for m in response.json().get('models', [])]
-                    st.success(f"Connection to Ollama ({ollama_url}) is ONLINE.")
-                    st.info(f"Available Models: {', '.join(models)}")
+    # --- PROMOTED ENGINE SETTINGS (Now in Tabs instead of Sidebar) ---
+    st.subheader("🛡️ Recruitment Intelligence Control Center")
+    st.markdown("""
+        <div class="glass-card" style="padding: 15px; border-left: 5px solid #4ade80; margin-bottom: 20px;">
+            <h4 style="margin:0;">⚙️ Engine Configuration</h4>
+            <p style="margin:5px 0 0 0; font-size: 0.9rem; opacity: 0.8;">
+                Manage AI providers, API keys, and model parameters securely.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # 1. Admin Password Security
+    if "settings_unlocked" not in st.session_state:
+        st.session_state.settings_unlocked = False
+    
+    ADMIN_PASSWORD = "admin123" 
+    
+    if not st.session_state.settings_unlocked:
+        st.warning("🔒 Technical settings are locked for unauthorized users.")
+        c1, c2 = st.columns([3, 1])
+        with c1:
+            admin_pass = st.text_input("Enter Admin Password to Unlock Settings", type="password", key="main_admin_pass")
+        with c2:
+            st.write("") # Spacing
+            st.write("")
+            if st.button("🔓 Unlock Settings", use_container_width=True):
+                if admin_pass == ADMIN_PASSWORD:
+                    st.session_state.settings_unlocked = True
+                    st.success("Access Granted!")
+                    st.rerun()
                 else:
-                    st.error(f"Ollama at {ollama_url} returned status code: {response.status_code}")
-            except Exception as e:
-                st.error(f"Ollama at {ollama_url} is OFFLINE: {e}")
+                    st.error("Invalid Administrative Password")
+    else:
+        # Unlock logic
+        col_header, col_lock = st.columns([4, 1])
+        with col_lock:
+            if st.button("🔒 Lock Settings", use_container_width=True):
+                st.session_state.settings_unlocked = False
+                st.rerun()
         
-        elif provider_key == "OpenAI":
-            if not api_key_val:
-                st.warning("Please enter an OpenAI API Key to test connection.")
-            else:
-                try:
-                    # Simple check for model list
-                    headers = {"Authorization": f"Bearer {api_key_val}"}
-                    response = requests.get("https://api.openai.com/v1/models", timeout=5, headers=headers)
-                    if response.status_code == 200:
-                        st.success("Connection to OpenAI API is ONLINE.")
-                    else:
-                        st.error(f"OpenAI API Error: {response.status_code}")
-                except Exception as e:
-                    st.error(f"Failed to reach OpenAI: {e}")
+        # --- Actual Settings UI (Locked behind password) ---
+        st.markdown("### 🤖 Model & Provider Selection")
+        # Initialize some vars
+        available_models = ["llama3.2"]
 
-        elif provider_key == "Groq":
-            if not api_key_val:
-                st.warning("Please enter a Groq API Key to test connection.")
-            else:
-                try:
-                    headers = {"Authorization": f"Bearer {api_key_val}"}
-                    response = requests.get("https://api.groq.com/openai/v1/models", timeout=5, headers=headers)
-                    if response.status_code == 200:
-                        st.success("Connection to Groq API is ONLINE.")
-                    else:
-                        st.error(f"Groq API Error: {response.status_code}")
-                except Exception as e:
-                    st.error(f"Failed to reach Groq: {e}")
+        # 1. Radio for Provider
+        new_provider = st.radio(
+            "Active AI Provider", 
+            ["Ollama (Local PC)", "Groq", "OpenAI", "Sarvam AI", "DeepSeek", "Gemini", "Azure OpenAI (Copilot)"], 
+            index=["Ollama (Local PC)", "Groq", "OpenAI", "Sarvam AI", "DeepSeek", "Gemini", "Azure OpenAI (Copilot)"].index(st.session_state.current_provider),
+            horizontal=True
+        )
+        if new_provider != st.session_state.current_provider:
+            st.session_state.current_provider = new_provider
+            st.rerun()
+
+        # Helper for API Key UI
+        def render_api_key_ui_main(provider_name, label):
+            current_key = st.session_state.api_config.get(provider_name, "")
+            input_key = f"main_{provider_name}_input"
+            if input_key not in st.session_state:
+                st.session_state[input_key] = current_key
+            visibility_key = f"main_{provider_name}_show"
+            if visibility_key not in st.session_state:
+                st.session_state[visibility_key] = False
+            input_type = "default" if st.session_state[visibility_key] else "password"
+            user_input = st.text_input(label, type=input_type, key=input_key, placeholder="Enter API Key")
+            
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                if st.button("💾 Save Key", key=f"msave_{provider_name}", use_container_width=True):
+                    st.session_state.api_config[provider_name] = user_input
+                    save_config(st.session_state.api_config)
+                    st.toast("Key Saved!")
+                    st.rerun()
+            with c2:
+                if st.button("🗑️ Delete", key=f"mdel_{provider_name}", use_container_width=True):
+                    if provider_name in st.session_state.api_config:
+                        del st.session_state.api_config[provider_name]
+                        save_config(st.session_state.api_config)
+                        del st.session_state[input_key]
+                        st.rerun()
+            with c3:
+                blabel = "🙈 Hide" if st.session_state[visibility_key] else "👁️ Show"
+                if st.button(blabel, key=f"mshow_{provider_name}", use_container_width=True):
+                    st.session_state[visibility_key] = not st.session_state[visibility_key]
+                    st.rerun()
+            return user_input
+
+        # Logic for each provider display
+        if st.session_state.current_provider == "Ollama (Local PC)":
+            raw_url = st.text_input("Ollama Base URL", value="http://localhost:11434")
+            ollama_url = raw_url.strip().rstrip('/')
+            try:
+                available_models = analyzer.get_available_models(custom_url=ollama_url)
+            except:
+                available_models = ["llama3.2"]
         
-        elif provider_key == "SarvamAI":
-            if not api_key_val:
-                st.warning("Please enter a Sarvam API Key.")
-            else:
-                try:
-                    headers = {"Authorization": f"Bearer {api_key_val}"}
-                    response = requests.get("https://api.sarvam.ai/v1/models", timeout=5, headers=headers)
-                    if response.status_code == 200:
-                        st.success("Connection to Sarvam AI is ONLINE.")
-                    else:
-                        st.error(f"Sarvam AI Error: {response.status_code}")
-                except Exception as e:
-                    st.error(f"Failed to reach Sarvam AI: {e}")
+        elif st.session_state.current_provider == "Groq":
+            available_models = ["llama-3.3-70b-versatile", "mixtral-8x7b-32768", "deepseek-r1-distill-llama-70b"]
+            render_api_key_ui_main("Groq", "Groq API Key")
+        
+        elif st.session_state.current_provider == "OpenAI":
+            available_models = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"]
+            render_api_key_ui_main("OpenAI", "OpenAI API Key")
 
-        elif provider_key == "DeepSeek":
-            if not api_key_val:
-                st.warning("Please enter a DeepSeek API Key.")
-            else:
-                try:
-                    headers = {"Authorization": f"Bearer {api_key_val}"}
-                    response = requests.get("https://api.deepseek.com/models", timeout=5, headers=headers)
-                    if response.status_code == 200:
-                        st.success("Connection to DeepSeek is ONLINE.")
-                    else:
-                        # DeepSeek might not support the same models endpoint or format, adjust as needed
-                        st.error(f"DeepSeek Error: {response.status_code} - {response.text}")
-                except Exception as e:
-                    st.error(f"Failed to reach DeepSeek: {e}")
+        elif st.session_state.current_provider == "Sarvam AI":
+            available_models = ["sarvam-2b-v0.5", "yoddha-2b", "openhathi-7b-hi-v0.1-base"]
+            render_api_key_ui_main("SarvamAI", "Sarvam API Key")
 
-        elif provider_key == "Gemini":
-            if not api_key_val:
-                st.warning("Please enter a Gemini API Key.")
-            else:
-                try:
-                    # Simple check using requests to list models
-                    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key_val}"
-                    response = requests.get(url, timeout=5)
-                    if response.status_code == 200:
-                        st.success("Connection to Google Gemini is ONLINE.")
-                    else:
-                        st.error(f"Gemini Error: {response.status_code} - {response.text}")
-                except Exception as e:
-                    st.error(f"Failed to reach Gemini: {e}")
+        elif st.session_state.current_provider == "DeepSeek":
+            available_models = ["deepseek-chat", "deepseek-reasoner"]
+            render_api_key_ui_main("DeepSeek", "DeepSeek API Key")
 
-        elif provider_key == "AzureOpenAI":
-            if not azure_config or not azure_config.get("api_key") or not azure_config.get("endpoint"):
-                st.warning("Please configure Azure OpenAI settings.")
-            else:
-                try:
-                    # Construct URL for model list or empty completion
-                    # {endpoint}/openai/deployments?api-version={version}
-                    endpoint = azure_config.get("endpoint").rstrip('/')
-                    version = azure_config.get("api_version")
-                    key = azure_config.get("api_key")
-                    url = f"{endpoint}/openai/deployments?api-version={version}"
-                    headers = {"api-key": key}
-                    
-                    response = requests.get(url, timeout=5, headers=headers)
-                    if response.status_code == 200:
-                         st.success("Connection to Azure OpenAI is ONLINE.")
-                    else:
-                        st.error(f"Azure Error: {response.status_code} - {response.text}")
-                except Exception as e:
-                    st.error(f"Failed to reach Azure OpenAI: {e}")
+        elif st.session_state.current_provider == "Gemini":
+            available_models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-1.0-pro"]
+            render_api_key_ui_main("Gemini", "Gemini API Key")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        elif st.session_state.current_provider == "Azure OpenAI (Copilot)":
+            st.markdown("#### Azure Connection Parameters")
+            az_endpoint = st.session_state.api_config.get("azure_endpoint", "")
+            az_key = st.session_state.api_config.get("azure_key", "")
+            az_deployment = st.session_state.api_config.get("azure_deployment", "")
+            az_version = st.session_state.api_config.get("azure_version", "2024-02-15-preview")
+            c1, c2 = st.columns(2)
+            with c1:
+                ui_az_endpoint = st.text_input("Endpoint URL", value=az_endpoint)
+                ui_az_deployment = st.text_input("Deployment Name", value=az_deployment)
+            with c2:
+                ui_az_key = st.text_input("API Key", value=az_key, type="password")
+                ui_az_version = st.text_input("API Version", value=az_version)
+            
+            if st.button("💾 Save Azure Configuration", use_container_width=True):
+                st.session_state.api_config.update({
+                    "azure_endpoint": ui_az_endpoint,
+                    "azure_key": ui_az_key,
+                    "azure_deployment": ui_az_deployment,
+                    "azure_version": ui_az_version
+                })
+                save_config(st.session_state.api_config)
+                st.success("Azure Settings Updated!")
+                st.rerun()
+            available_models = [ui_az_deployment] if ui_az_deployment else ["Enter Deployment Name"]
+
+        # 2. Model Selection
+        new_model = st.selectbox(
+            "Active AI Model", 
+            available_models,
+            index=available_models.index(st.session_state.current_model) if st.session_state.current_model in available_models else 0
+        )
+        if new_model != st.session_state.current_model:
+            st.session_state.current_model = new_model
+            st.rerun()
+
+        # 3. Parameters
+        st.markdown("### ⚙️ Inference Parameters")
+        new_tokens = st.slider("Max Token Response Limit", 100, 4000, st.session_state.current_max_tokens, 100)
+        if new_tokens != st.session_state.current_max_tokens:
+            st.session_state.current_max_tokens = new_tokens
+            st.rerun()
+
+        st.markdown("---")
+        st.markdown("### 🚑 System Tools")
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("🧼 Clear Cache", use_container_width=True):
+                st.cache_resource.clear()
+                st.toast("Cache Cleared!")
+        with c2:
+            if st.button("🔥 Run Health Check", use_container_width=True):
+                st.info(f"Connected to: {st.session_state.current_provider}")
 
 # Copyright Footer
 st.markdown("""
