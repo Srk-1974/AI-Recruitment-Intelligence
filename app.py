@@ -11,7 +11,7 @@ from core.models import AnalysisRequest, ChatRequest
 IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 
 # Page Config
-st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="🤖")
+st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="💠")
 
 # Version: 1.7.2 - Full Parameter Fix (Sync: 2026-02-16)
 # Initialize Session States
@@ -322,7 +322,7 @@ if provider_key == "AzureOpenAI":
 else:
     api_key_val = st.session_state.api_config.get(provider_key)
 
-st.markdown("# 🤖 AI Recruitment Intelligence Portal")
+st.markdown("# 💠 AI Recruitment Intelligence Portal")
 st.markdown("### Professional HR Candidate Analysis & Ranking")
 st.markdown("---")
 
@@ -568,7 +568,7 @@ with tabs[2]:
             st.rerun()
 
 with tabs[3]:
-    st.subheader("🤖 Recruitment ChatBot")
+    st.subheader("💠 Recruitment ChatBot")
     st.markdown("---")
     
     # Initialize chat history
