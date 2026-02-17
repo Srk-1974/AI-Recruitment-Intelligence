@@ -271,7 +271,9 @@ with st.sidebar:
     st.caption("🟢 Production Mode Active")
     st.caption("🔄 Last Sync: Feb 4, 17:01 EST")
     if st.button("🚪 Logout"):
-        st.session_state["password_correct"] = False
+        # Clear all session state to force a full reset to defaults upon next login
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
         st.rerun()
     # Note about Engine Settings
     st.markdown("---")
