@@ -275,8 +275,17 @@ with st.sidebar:
         st.rerun()
     # Note about Engine Settings
     st.markdown("---")
-    st.info("⚙️ **Engine Settings** have moved to the **Settings** tab in the main portal for easier access.")
-    st.caption("Unlock with Admin Password there to change models or API keys.")
+    st.info("⚙️ **Engine Settings** have moved to the **Settings** tab.")
+    
+    st.markdown("### 🚑 System Tools")
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("🧼 Clear Cache", use_container_width=True):
+            st.cache_resource.clear()
+            st.toast("Cache Cleared!")
+    with c2:
+        if st.button("🔥 Health Check", use_container_width=True):
+            st.info(f"Connected to: {st.session_state.current_provider}")
 
 # Initialize Engine Variables at top level (accessible to all tabs)
 # Use session state to persist choices
@@ -776,15 +785,7 @@ with tabs[4]:
             st.rerun()
 
         st.markdown("---")
-        st.markdown("### 🚑 System Tools")
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("🧼 Clear Cache", use_container_width=True):
-                st.cache_resource.clear()
-                st.toast("Cache Cleared!")
-        with c2:
-            if st.button("🔥 Run Health Check", use_container_width=True):
-                st.info(f"Connected to: {st.session_state.current_provider}")
+        st.caption("Advanced system tools are available in the sidebar.")
 
 # Copyright Footer
 st.markdown("""
