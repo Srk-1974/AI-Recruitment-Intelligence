@@ -66,10 +66,10 @@ def check_password():
     st.markdown("""
         <div style="text-align: center; margin: 50px auto 30px;">
             <div style="
-                background: linear-gradient(135deg, #1e3a8a, #059669);
+                background: linear-gradient(135deg, #4c1d95, #6d28d9);
                 padding: 20px 50px;
                 border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(30, 64, 175, 0.4);
+                box-shadow: 0 8px 24px rgba(109, 40, 217, 0.4);
                 display: inline-block;
             ">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
@@ -88,7 +88,7 @@ def check_password():
                             margin: 0;
                             font-size: 36px;
                             font-weight: 800;
-                            color: #4ade80;
+                            color: #a78bfa;
                             letter-spacing: 2px;
                             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
                         ">BHADRADRI</h1>
@@ -102,7 +102,7 @@ def check_password():
                     </div>
                 </div>
             </div>
-            <h2 style="margin-top: 25px; font-size: 24px; color: #38bdf8;">HR Intelligence Assistant</h2>
+            <h2 style="margin-top: 25px; font-size: 24px; color: #c4b5fd;">HR Intelligence Assistant</h2>
             <p style="opacity: 0.6; font-size: 14px;">© 2026 Bhadradri Technologies Inc. All Rights Reserved</p>
         </div>
         <div class="glass-card" style="max-width: 400px; margin: 30px auto;">
@@ -164,7 +164,7 @@ st.markdown("""
     }
     
     .glass-card:hover {
-        border-color: rgba(74, 222, 128, 0.4);
+        border-color: rgba(167, 139, 250, 0.4);
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 
@@ -174,9 +174,9 @@ st.markdown("""
         padding: 6px 14px;
         margin: 4px;
         border-radius: 20px;
-        background: rgba(34, 197, 94, 0.1);
-        color: #4ade80;
-        border: 1px solid rgba(74, 222, 128, 0.3);
+        background: rgba(139, 92, 246, 0.1);
+        color: #a78bfa;
+        border: 1px solid rgba(167, 139, 250, 0.3);
         font-size: 0.85rem;
         font-weight: 600;
     }
@@ -189,7 +189,7 @@ st.markdown("""
 
     /* Buttons */
     .stButton>button {
-        background: linear-gradient(90deg, #22c55e 0%, #10b981 100%);
+        background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
         color: white;
         border: none;
         border-radius: 10px;
@@ -202,12 +202,12 @@ st.markdown("""
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
     }
 
     /* Headers */
     h1 {
-        background: linear-gradient(90deg, #4ade80, #38bdf8);
+        background: linear-gradient(90deg, #a78bfa, #c4b5fd);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 800 !important;
@@ -234,10 +234,10 @@ with st.sidebar:
     st.markdown("""
         <div style="text-align: center; margin-bottom: 15px;">
             <div style="
-                background: linear-gradient(135deg, #1e3a8a, #059669);
+                background: linear-gradient(135deg, #4c1d95, #6d28d9);
                 padding: 8px 15px;
                 border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+                box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
             ">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <div style="
@@ -252,7 +252,7 @@ with st.sidebar:
                             margin: 0;
                             font-size: 13px;
                             font-weight: 700;
-                            color: #4ade80;
+                            color: #a78bfa;
                             letter-spacing: 0.8px;
                         ">BHADRADRI</p>
                         <p style="
