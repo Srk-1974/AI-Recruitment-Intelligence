@@ -81,7 +81,7 @@ def check_password():
                         align-items: center;
                         justify-content: center;
                     ">
-                        <span style="font-size: 42px;">🏹</span>
+                        <span style="font-size: 42px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
                         <h1 style="
@@ -282,7 +282,7 @@ with st.sidebar:
                         padding: 6px;
                         border-radius: 4px;
                     ">
-                        <span style="font-size: 16px;">🏹</span>
+                        <span style="font-size: 16px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
                         <p class="logo-exception" style="
