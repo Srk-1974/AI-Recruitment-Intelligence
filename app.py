@@ -212,22 +212,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
     }
 
-    /* Force Sidebar Button Visibility - High Contrast White Text */
-    div[data-testid="stSidebar"] button {
-        background-color: #4b2bab !important;
-        border: 2px solid #5b21b6 !important;
-        border-radius: 8px !important;
-    }
-
-    /* Target all possible text containers inside the button to force white color */
-    div[data-testid="stSidebar"] button div, 
-    div[data-testid="stSidebar"] button span, 
-    div[data-testid="stSidebar"] button p,
-    div[data-testid="stSidebar"] button * {
-        color: #ffffff !important;
-        font-weight: 900 !important;
-        text-decoration: none !important;
-    }
 
     /* Headers */
     /* Headers */
@@ -254,6 +238,23 @@ st.markdown("""
     /* Hide Streamlit Branding and Menu */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+
+    /* FINAL OVERRIDE: Force Sidebar Button Visibility - High Contrast White Text */
+    div[data-testid="stSidebar"] button {
+        background-color: #4b2bab !important;
+        border: 2px solid #5b21b6 !important;
+        border-radius: 8px !important;
+    }
+
+    /* Target all possible text containers inside the button to force white color */
+    div[data-testid="stSidebar"] button div, 
+    div[data-testid="stSidebar"] button span, 
+    div[data-testid="stSidebar"] button p,
+    div[data-testid="stSidebar"] button * {
+        color: #ffffff !important;
+        font-weight: 900 !important;
+        text-decoration: none !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
