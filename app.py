@@ -212,12 +212,17 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
     }
 
-    /* Force Sidebar Button Visibility */
-    [data-testid="stSidebar"] .stButton>button {
-        color: white !important;
-        background: linear-gradient(90deg, #6d28d9 0%, #4c1d95 100%) !important;
-        font-weight: 800 !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    /* Force Sidebar Button Visibility - Ultra Aggressive targeting */
+    div[data-testid="stSidebar"] button {
+        background-color: #4b2bab !important;
+        border: 2px solid #5b21b6 !important;
+        border-radius: 8px !important;
+    }
+
+    div[data-testid="stSidebar"] button p {
+        color: #ffffff !important;
+        font-weight: 900 !important;
+        font-size: 1rem !important;
     }
 
     /* Headers */
