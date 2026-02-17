@@ -226,7 +226,7 @@ st.markdown("""
         border-right: 1px solid rgba(139, 92, 246, 0.2);
     }
     
-    [data-testid="stSidebar"] * {
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
         color: #1e293b !important;
     }
 
@@ -268,15 +268,16 @@ with st.sidebar:
                         <p style="
                             margin: 0;
                             font-size: 13px;
-                            font-weight: 700;
-                            color: #a78bfa;
+                            font-weight: 800;
+                            color: #ffffff !important;
                             letter-spacing: 0.8px;
                         ">BHADRADRI</p>
                         <p style="
                             margin: 0;
                             font-size: 7px;
-                            color: rgba(255, 255, 255, 0.9);
+                            color: rgba(255, 255, 255, 0.95) !important;
                             letter-spacing: 2px;
+                            font-weight: 400;
                         ">TECHNOLOGY INC.</p>
                     </div>
                 </div>
