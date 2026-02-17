@@ -226,7 +226,8 @@ st.markdown("""
         border-right: 1px solid rgba(139, 92, 246, 0.2);
     }
     
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p:not(.logo-exception) {
+    /* Better Sidebar Visibility for Light Theme - Target specific containers ONLY, avoid buttons */
+    [data-testid="stSidebar"] .stMarkdown p:not(.logo-exception) {
         color: #1e293b !important;
     }
 
@@ -241,17 +242,19 @@ st.markdown("""
 
     /* FINAL OVERRIDE: Force Sidebar Button Visibility - High Contrast White Text */
     div[data-testid="stSidebar"] button {
-        background-color: #4b2bab !important;
-        border: 2px solid #5b21b6 !important;
+        background-color: #4c1d95 !important;
+        border: 2px solid #6d28d9 !important;
         border-radius: 8px !important;
     }
 
     /* Target all possible text containers inside the button to force white color */
+    div[data-testid="stSidebar"] button,
     div[data-testid="stSidebar"] button div, 
     div[data-testid="stSidebar"] button span, 
     div[data-testid="stSidebar"] button p,
     div[data-testid="stSidebar"] button * {
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         font-weight: 900 !important;
         text-decoration: none !important;
     }
