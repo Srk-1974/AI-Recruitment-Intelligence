@@ -12,7 +12,7 @@ from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesP
 from core.models import EvaluationResult, ChatResponse
 
 class HRAnalyzer:
-    def __init__(self, model_name: str = "llama3.2", ollama_url: str = "http://localhost:11434"):
+    def __init__(self, model_name: str = "llama-3.3-70b-versatile", ollama_url: str = "http://localhost:11434"):
         self.ollama_base_url = ollama_url
         self.llm = OllamaLLM(model=model_name, base_url=self.ollama_base_url)
         self.prompt_template = PromptTemplate(
@@ -174,7 +174,7 @@ class HRAnalyzer:
                 interview_questions=["Please check your AI configuration."]
             )
 
-    def chat(self, message: str, history: list, model_name: str = "llama3.2", temperature: float = 0.7, max_tokens: int = 1000, provider: str = "Ollama", api_key: str = None, ollama_url: str = None, azure_config: dict = None, **kwargs) -> str:
+    def chat(self, message: str, history: list, model_name: str = "llama-3.3-70b-versatile", temperature: float = 0.7, max_tokens: int = 1000, provider: str = "Groq", api_key: str = None, ollama_url: str = None, azure_config: dict = None, **kwargs) -> str:
         """General purpose chat with system context about the HR app."""
         system_prompt = """
         You are the 'HR Intelligence Assistant', a helpful AI built to explain and assist with the Intelligent HR Recruitment Assistant application.

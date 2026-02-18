@@ -13,7 +13,7 @@ IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 # Page Config
 st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="☀️", initial_sidebar_state="expanded")
 
-# Version: 1.7.2 - Full Parameter Fix (Sync: 2026-02-16)
+# Version: 1.7.3 - Default Model Fix (Sync: 2026-02-18)
 # Initialize Session States
 if "eval_history" not in st.session_state:
     st.session_state.eval_history = []
@@ -384,7 +384,7 @@ with st.sidebar:
     
     st.markdown("## 🛡️ HR Intelligence v1.7")
     st.caption("🟢 Production Mode Active")
-    st.caption("🔄 Last Sync: Feb 4, 17:01 EST")
+    st.caption("🔄 Last Sync: Feb 18, 12:45 EST")
     if st.button("🚪 Logout"):
         # Clear all session state to force a full reset to defaults upon next login
         for key in list(st.session_state.keys()):
@@ -405,9 +405,9 @@ with st.sidebar:
 # Initialize Engine Variables at top level (accessible to all tabs)
 # Use session state to persist choices
 if "current_provider" not in st.session_state:
-    st.session_state.current_provider = "Ollama (Local PC)"
+    st.session_state.current_provider = st.session_state.api_config.get("last_provider", "Groq")
 if "current_model" not in st.session_state:
-    st.session_state.current_model = "llama3.2"
+    st.session_state.current_model = st.session_state.api_config.get("last_model", "llama-3.3-70b-versatile")
 if "current_temp" not in st.session_state:
     st.session_state.current_temp = 0.1
 if "current_max_tokens" not in st.session_state:
@@ -801,6 +801,8 @@ with tabs[4]:
         )
         if new_provider != st.session_state.current_provider:
             st.session_state.current_provider = new_provider
+            st.session_state.api_config["last_provider"] = new_provider
+            save_config(st.session_state.api_config)
             st.rerun()
 
         # Helper for API Key UI
@@ -899,6 +901,8 @@ with tabs[4]:
         )
         if new_model != st.session_state.current_model:
             st.session_state.current_model = new_model
+            st.session_state.api_config["last_model"] = new_model
+            save_config(st.session_state.api_config)
             st.rerun()
 
         # 3. Parameters
