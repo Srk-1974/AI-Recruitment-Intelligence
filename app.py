@@ -382,7 +382,7 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("## 🛡️ HR Intelligence v1.7")
+    st.markdown("## 🛡️ HR Intelligence v1.7.3")
     st.caption("🟢 Production Mode Active")
     st.caption("🔄 Last Sync: Feb 18, 12:45 EST")
     if st.button("🚪 Logout"):
@@ -919,6 +919,6 @@ with tabs[4]:
 st.markdown("""
     <div style="text-align: center; margin-top: 50px; padding: 20px; opacity: 0.5;">
         <p style="font-size: 12px;">© 2026 Bhadradri Technologies Inc. All Rights Reserved.</p>
-        <p style="font-size: 11px;">HR Intelligence Assistant | Powered by AI | Version 1.7</p>
+        <p style="font-size: 11px;">HR Intelligence Assistant | Powered by AI | Version 1.7.3</p>
     </div>
 """, unsafe_allow_html=True)
