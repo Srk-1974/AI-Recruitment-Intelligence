@@ -3,6 +3,8 @@ import pandas as pd
 import json
 import os
 import requests
+import datetime
+from datetime import datetime
 from core.parser import extract_text
 from core.analyzer import HRAnalyzer
 from core.models import AnalysisRequest, ChatRequest
