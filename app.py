@@ -571,7 +571,7 @@ with tabs[0]:
         st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="glass-card" style="border-left: 5px solid #facc15;">', unsafe_allow_html=True)
-        st.markdown("#### 🔍 AI Matching Scorecard")
+        st.markdown("#### 🔍 AI Matching Methodology & Scorecard")
         st.markdown(getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.'))
         st.markdown('</div>', unsafe_allow_html=True)
 
