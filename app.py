@@ -163,41 +163,47 @@ st.markdown("""
     }
 
     .main {
-        background-color: var(--bg-main);
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
-            radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+        background: radial-gradient(circle at 0% 0%, #f1f5f9 0%, transparent 50%),
+                    radial-gradient(circle at 100% 0%, #e0e7ff 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, #f5f3ff 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, #eff6ff 0%, transparent 50%),
+                    #f8fafc;
         background-attachment: fixed;
     }
 
     /* Glassmorphism Card Style */
     .glass-card {
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
         border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 24px;
-        padding: 28px;
-        margin-bottom: 24px;
-        box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.02);
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: 28px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 
+            0 20px 40px -15px rgba(0, 0, 0, 0.05),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .glass-card:hover {
-        transform: translateY(-5px) scale(1.005);
-        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateY(-8px) scale(1.01);
         background: rgba(255, 255, 255, 0.85);
-        box-shadow: 0 40px 80px -20px rgba(99, 102, 241, 0.12);
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 
+            0 30px 60px -12px rgba(99, 102, 241, 0.08),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.6);
     }
 
     /* Metric Cards */
     [data-testid="stMetricValue"] {
-        font-size: 2.5rem !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+        font-size: 3.2rem !important;
+        font-weight: 900 !important;
+        background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        letter-spacing: -2.5px;
+        line-height: 1;
     }
 
     /* Sidebar Customization */
@@ -214,17 +220,16 @@ st.markdown("""
 
     /* Button Styling */
     .stButton>button {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 14px 28px;
-        font-weight: 600;
-        font-size: 1rem;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        text-transform: none;
-        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 16px !important;
+        padding: 16px 32px !important;
+        font-weight: 700 !important;
+        font-size: 1.05rem !important;
+        letter-spacing: 0.5px !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3) !important;
     }
     
     .stButton>button:hover {
