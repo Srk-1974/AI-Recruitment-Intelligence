@@ -575,7 +575,7 @@ with tabs[0]:
                     st.markdown(f"""
                     <div class="glass-card" style="border-left: 4px solid #facc15;">
                         <p style="margin:0; font-size: 0.95rem; line-height: 1.6;">
-                            {result.matching_explanation}
+                            {getattr(result, 'matching_explanation', 'Detailed methodology is processing or unsupported in this model version.')}
                         </p>
                     </div>
                     """, unsafe_allow_html=True)

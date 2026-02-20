@@ -173,6 +173,7 @@ class HRAnalyzer:
                 experience_evaluation="The AI failed to complete the request.",
                 candidate_summary=f"{summary_hint} Error logic: {error_details}",
                 ranking="System Error",
+                matching_explanation="Analysis was interrupted. No methodology available.",
                 interview_questions=["Please check your AI configuration."]
             )
 
