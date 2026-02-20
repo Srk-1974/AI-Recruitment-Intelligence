@@ -527,7 +527,8 @@ with tabs[0]:
                             "ranking": result.ranking,
                             "result": result
                         })
-                        st.balloons()
+                        if result.match_percentage >= 70:
+                            st.balloons()
                     except Exception as e:
                         st.error(f"Analysis failed: {e}")
         st.markdown('</div>', unsafe_allow_html=True)
