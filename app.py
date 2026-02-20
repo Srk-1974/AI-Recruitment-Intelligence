@@ -571,8 +571,8 @@ with tabs[0]:
         st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="glass-card" style="border-left: 5px solid #facc15;">', unsafe_allow_html=True)
-        st.markdown("#### 🔍 AI Matching Methodology")
-        st.write(getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.'))
+        st.markdown("#### 🔍 AI Matching Scorecard")
+        st.markdown(getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.'))
         st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
@@ -703,8 +703,8 @@ with tabs[2]:
             st.markdown('</div>', unsafe_allow_html=True)
             
         st.markdown('<div class="glass-card" style="border-left: 5px solid #6366f1;">', unsafe_allow_html=True)
-        st.markdown("#### 💡 Historical Methodology")
-        st.write(getattr(res, 'matching_explanation', 'Detailed scoring logic not available for this legacy record.'))
+        st.markdown("#### 💡 Historical Matching Scorecard")
+        st.markdown(getattr(res, 'matching_explanation', 'Detailed scoring logic not available for this legacy record.'))
         st.markdown('</div>', unsafe_allow_html=True)
 
         if st.button("🏃 Close Vault Profile", use_container_width=True):
