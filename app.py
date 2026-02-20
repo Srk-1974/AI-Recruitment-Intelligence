@@ -365,6 +365,28 @@ st.markdown("""
         border-color: var(--primary);
         background-color: var(--bg-main);
     }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* Dataframe styling */
+    [data-testid="stDataFrame"] {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #f1f5f9;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -472,321 +494,275 @@ tabs = st.tabs(["📄 Single Evaluation", "👥 Batch Ranking", "📜 Analysis H
 
 with tabs[0]:
     st.markdown('<h2 class="tab-subheader">📄 Single Resume Evaluation</h2>', unsafe_allow_html=True)
-    st.write("")
-    col1, col2 = st.columns([1, 1], gap="large")
     
-    with col1:
-        jd_input = st.text_area("Job Description", height=300, placeholder="Paste the Job Description here...")
-    
-    with col2:
-        resume_file = st.file_uploader("Upload Resume (PDF/DOCX)", type=["pdf", "docx"])
-    
-    if st.button("Analyze Resume"):
-        if not jd_input or not resume_file:
-            st.error("Please provide both Job Description and Resume.")
-        else:
-            with st.spinner(f"AI ({provider}) is analyzing..."):
-                try:
-                    # Direct call instead of requests.post
-                    resume_text = extract_text(resume_file.name, resume_file.getvalue())
-                    result = analyzer.analyze(
-                        resume_text, 
-                        jd_input, 
-                        model_name=selected_model,
-                        temperature=temp_val,
-                        max_tokens=top_p_val,
-                        provider=provider_key,
-                        api_key=api_key_val,
-                        ollama_url=ollama_url,
-                        azure_config=azure_config
-                    )
-                    
-                    st.success("Analysis Complete!")
-                    
-                    # Save to History
-                    from datetime import datetime
-                    history_item = {
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "candidate_name": resume_file.name,
-                        "match_percentage": result.match_percentage,
-                        "ranking": result.ranking,
-                        "result": result
-                    }
-                    st.session_state.eval_history.append(history_item)
-                    
-                    # Set the current result for display below
-                    st.session_state.current_analysis = result
-                    
-                    # Dashboard Metrics
-                    m1, m2, m3 = st.columns(3)
-                    with m1:
-                        st.markdown(f"""
-                        <div class="glass-card" style="border-top: 4px solid #7c3aed;">
-                            <p style="margin:0; opacity:0.7; font-weight:600;">Match Confidence</p>
-                            <h1 style="margin:0; font-size: 3rem; color: #7c3aed;">{result.match_percentage}%</h1>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    with m2:
-                        st.markdown(f"""
-                        <div class="glass-card" style="border-top: 4px solid #38bdf8;">
-                            <p style="margin:0; opacity:0.7; font-weight:600;">Recommended Rank</p>
-                            <h1 style="margin:0; font-size: 3rem; color: #0284c7;">{result.ranking}</h1>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    with m3:
-                        st.markdown(f"""
-                        <div class="glass-card" style="border-top: 4px solid #10b981;">
-                            <p style="margin:0; opacity:0.7; font-weight:600;">Skills Match</p>
-                            <h1 style="margin:0; font-size: 3rem; color: #059669;">{len(result.matched_skills)}</h1>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    
-                    st.markdown("### 📝 Executive Summary")
-                    st.markdown(f"""
-                    <div class="glass-card">
-                        {result.candidate_summary}
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    st.markdown("### 🛠 Skill Analysis")
-                    c1, c2 = st.columns(2)
-                    with c1:
-                        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                        st.subheader("✅ Matched Competencies")
-                        skills_html = "".join([f'<span class="skill-tag">{s}</span>' for s in result.matched_skills])
-                        st.markdown(skills_html, unsafe_allow_html=True)
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    
-                    with c2:
-                        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                        st.subheader("❌ Missing Requirements")
-                        missing_html = "".join([f'<span class="skill-tag missing-tag">{s}</span>' for s in result.missing_skills])
-                        st.markdown(missing_html, unsafe_allow_html=True)
-                        st.markdown('</div>', unsafe_allow_html=True)
-                        
-                    st.markdown("### 📊 Experience Evaluation")
-                    st.markdown(f"""
-                    <div class="glass-card">
-                        {result.experience_evaluation}
-                    </div>
-                    """, unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        col1, col2 = st.columns([1, 1], gap="large")
+        with col1:
+            st.markdown("#### 📝 Job Requirements")
+            jd_input = st.text_area("JD Content", height=300, placeholder="Paste the Job Description here...", label_visibility="collapsed")
+        with col2:
+            st.markdown("#### 📤 Candidate Resume")
+            resume_file = st.file_uploader("Upload PDF/DOCX", type=["pdf", "docx"], label_visibility="collapsed")
+        
+        if st.button("🚀 Start AI Analysis", use_container_width=True):
+            if not jd_input or not resume_file:
+                st.error("Please provide both Job Description and Resume.")
+            else:
+                with st.spinner(f"✨ AI ({provider}) is deep-scanning candidate profile..."):
+                    try:
+                        resume_text = extract_text(resume_file.name, resume_file.getvalue())
+                        result = analyzer.analyze(
+                            resume_text, jd_input, 
+                            model_name=selected_model, temperature=temp_val, max_tokens=top_p_val,
+                            provider=provider_key, api_key=api_key_val, ollama_url=ollama_url, azure_config=azure_config
+                        )
+                        st.session_state.current_analysis = result
+                        st.session_state.eval_history.append({
+                            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            "candidate_name": resume_file.name,
+                            "match_percentage": result.match_percentage,
+                            "ranking": result.ranking,
+                            "result": result
+                        })
+                        st.balloons()
+                    except Exception as e:
+                        st.error(f"Analysis failed: {e}")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-                    st.markdown("### 🔍 AI Matching Methodology")
-                    st.markdown(f"""
-                    <div class="glass-card" style="border-left: 4px solid #facc15;">
-                        <p style="margin:0; font-size: 0.95rem; line-height: 1.6;">
-                            {getattr(result, 'matching_explanation', 'Detailed methodology is processing or unsupported in this model version.')}
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+    if "current_analysis" in st.session_state:
+        result = st.session_state.current_analysis
+        st.markdown("---")
+        st.markdown("### 📊 Analysis Insights")
+        
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            st.markdown(f'<div class="glass-card" style="text-align:center; border-top: 4px solid #6366f1;"><p style="color:var(--text-muted); font-weight:600; margin-bottom:0;">Match Score</p><h1>{result.match_percentage}%</h1></div>', unsafe_allow_html=True)
+        with m2:
+            st.markdown(f'<div class="glass-card" style="text-align:center; border-top: 4px solid #8b5cf6;"><p style="color:var(--text-muted); font-weight:600; margin-bottom:0;">Fit Status</p><h1>{result.ranking}</h1></div>', unsafe_allow_html=True)
+        with m3:
+            # Simple count of matched skills
+            st.markdown(f'<div class="glass-card" style="text-align:center; border-top: 4px solid #10b981;"><p style="color:var(--text-muted); font-weight:600; margin-bottom:0;">Skills Found</p><h1>{len(result.matched_skills)}</h1></div>', unsafe_allow_html=True)
 
-                    st.markdown("### ❓ AI-Generated Interview Questions")
-                    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                    questions = getattr(result, 'interview_questions', [])
-                    if questions:
-                        for q in questions:
-                            st.markdown(f"🔹 **{q}**")
-                    else:
-                        st.info("No interview questions generated.")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                    
-                except Exception as e:
-                    err_msg = str(e)
-                    st.error(f"Analysis failed: {err_msg}")
-                    if "insufficient_quota" in err_msg:
-                        st.warning("⚠️ **OpenAI Quota Exceeded** on this batch item.")
-                        st.info("💡 **Tip**: Switch to **Ollama** in the sidebar to run large batches for free without quota limits!")
-                    st.info("💡 **Tip**: If using a local LLM, make sure the model is pulled and your laptop isn't sleeping.")
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("#### 📝 Executive Summary")
+        st.write(result.candidate_summary)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+            st.markdown("#### ✅ Matched Skills")
+            skills_html = "".join([f'<span class="skill-tag">{s}</span>' for s in result.matched_skills])
+            st.markdown(skills_html or "_No direct skill matches detected._", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with c2:
+            st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+            st.markdown("#### ❌ Missing Skills")
+            missing_html = "".join([f'<span class="skill-tag missing-tag">{s}</span>' for s in result.missing_skills])
+            st.markdown(missing_html or "_No critical missing skills detected._", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("#### ⏳ Experience Evaluation")
+        st.write(result.experience_evaluation)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="glass-card" style="border-left: 5px solid #facc15;">', unsafe_allow_html=True)
+        st.markdown("#### 🔍 AI Matching Methodology")
+        st.write(getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.'))
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("#### ❓ Recommended Interview Questions")
+        for q in result.interview_questions:
+            st.markdown(f'<div style="padding:10px; background:#f8fafc; border-radius:10px; margin-bottom:8px; border-left:3px solid #6366f1;">🔹 {q}</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 with tabs[1]:
     st.markdown('<h2 class="tab-subheader">👥 Batch Candidate Ranking</h2>', unsafe_allow_html=True)
-    st.write("")
-    batch_jd = st.text_area("Job Description for Ranking", height=200, key="batch_jd", placeholder="What are you looking for in this candidates batch?")
-    batch_resumes = st.file_uploader("Upload Multiple Resumes", type=["pdf", "docx"], accept_multiple_files=True)
     
-    if st.button("Rank All Candidates"):
-        if not batch_jd or not batch_resumes:
-            st.error("Please provide JD and at least one resume.")
-        else:
-            results = []
-            progress_bar = st.progress(0)
-            for i, res in enumerate(batch_resumes):
-                try:
-                    resume_text = extract_text(res.name, res.getvalue())
-                    result = analyzer.analyze(
-                        resume_text, 
-                        batch_jd, 
-                        model_name=selected_model,
-                        temperature=temp_val,
-                        max_tokens=top_p_val,
-                        provider=provider_key,
-                        api_key=api_key_val,
-                        ollama_url=ollama_url
-                    )
+    with st.container():
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        batch_jd = st.text_area("Job Description for Batch Ranking", height=200, key="batch_jd", placeholder="Define the criteria for this batch scan...")
+        batch_resumes = st.file_uploader("Drop Multiple Resumes Here", type=["pdf", "docx"], accept_multiple_files=True)
+        
+        if st.button("🔥 Run Competitive Ranking", use_container_width=True):
+            if not batch_jd or not batch_resumes:
+                st.error("Please provide JD and at least one resume.")
+            else:
+                results = []
+                progress_container = st.empty()
+                for i, res in enumerate(batch_resumes):
+                    try:
+                        progress_container.markdown(f"🔄 Processing {i+1}/{len(batch_resumes)}: **{res.name}**")
+                        resume_text = extract_text(res.name, res.getvalue())
+                        result = analyzer.analyze(
+                            resume_text, batch_jd, 
+                            model_name=selected_model, temperature=temp_val, max_tokens=top_p_val,
+                            provider=provider_key, api_key=api_key_val, ollama_url=ollama_url
+                        )
+                        from datetime import datetime
+                        st.session_state.eval_history.append({
+                            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            "candidate_name": res.name,
+                            "match_percentage": result.match_percentage,
+                            "ranking": getattr(result, 'ranking', 'N/A'),
+                            "result": result
+                        })
+                        results.append({
+                            "Candidate": res.name,
+                            "Score": result.match_percentage,
+                            "Status": result.ranking,
+                            "Summary": result.candidate_summary
+                        })
+                    except Exception as e:
+                        st.warning(f"Skipped {res.name}: {e}")
+                
+                if results:
+                    st.markdown("---")
+                    st.markdown("### 🏆 Final Batch Rankings")
+                    df = pd.DataFrame(results).sort_values(by="Score", ascending=False)
                     
-                    # Save each batch item to history
-                    from datetime import datetime
-                    st.session_state.eval_history.append({
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "candidate_name": res.name,
-                        "match_percentage": result.match_percentage,
-                        "ranking": getattr(result, 'ranking', 'N/A'),
-                        "result": result
-                    })
-
-                    results.append({
-                        "candidate_name": res.name,
-                        "match_percentage": result.match_percentage,
-                        "ranking": result.ranking,
-                        "candidate_summary": result.candidate_summary # Changed to result.candidate_summary
-                    })
-                except Exception as e:
-                    st.warning(f"Could not process {res.name}: {e}")
-                progress_bar.progress((i + 1) / len(batch_resumes))
-            
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                st.subheader("📊 Ranking Analytics")
-                df = pd.DataFrame(results)
-                # Sort by score
-                df = df.sort_values(by="match_percentage", ascending=False)
-                st.dataframe(df[['candidate_name', 'match_percentage', 'ranking', 'candidate_summary']], use_container_width=True)
-                st.bar_chart(df.set_index('candidate_name')['match_percentage'])
-                st.markdown('</div>', unsafe_allow_html=True)
+                    col_chart, col_table = st.columns([1, 2])
+                    with col_chart:
+                        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+                        st.markdown("#### 📈 Score Distribution")
+                        st.bar_chart(df.set_index('Candidate')['Score'])
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    with col_table:
+                        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+                        st.markdown("#### 📋 Detailed Leaderboard")
+                        st.dataframe(df, use_container_width=True, hide_index=True)
+                        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 with tabs[2]:
-    st.markdown('<h2 class="tab-subheader">📜 Evaluation History</h2>', unsafe_allow_html=True)
-    st.write("")
-    st.markdown("---")
+    st.markdown('<h2 class="tab-subheader">📜 Evaluation Vault</h2>', unsafe_allow_html=True)
     
     if not st.session_state.eval_history:
-        st.info("No evaluations found in this session. Start by analyzing a resume!")
+        st.info("The vault is currently empty. Analyzed resumes will appear here.")
     else:
-        # Create a display dataframe
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         history_df = pd.DataFrame([
             {
                 "ID": i,
-                "Time": item.get("timestamp", "N/A"),
-                "Candidate": item.get("candidate_name", "Unknown"),
-                "Score": f"{item.get('match_percentage', 0)}%",
-                "Rank": item.get("ranking", "N/A")
+                "Timestamp": item.get("timestamp"),
+                "Candidate": item.get("candidate_name"),
+                "Score": f"{item.get('match_percentage')}%",
+                "Status": item.get("ranking")
             } for i, item in enumerate(st.session_state.eval_history)
         ])
         
-        st.dataframe(history_df.set_index("ID"), use_container_width=True)
+        st.dataframe(history_df, use_container_width=True, hide_index=True)
         
-        # Details Selection
-        selected_id = st.selectbox("Select an evaluation to view details", 
-                                  options=range(len(st.session_state.eval_history)),
-                                  format_func=lambda x: f"{st.session_state.eval_history[x]['candidate_name']} ({st.session_state.eval_history[x]['timestamp']})")
-        
-        if st.button("🔍 View Details"):
-            st.session_state.viewing_history_item = st.session_state.eval_history[selected_id]
-            st.rerun()
+        c1, c2 = st.columns([3, 1])
+        with c1:
+            selected_id = st.selectbox("Select a profile to decrypt details", 
+                                      options=range(len(st.session_state.eval_history)),
+                                      format_func=lambda x: f"{st.session_state.eval_history[x]['candidate_name']} ({st.session_state.eval_history[x]['timestamp']})")
+        with c2:
+            st.write("") # Spacer
+            if st.button("🔍 Open Profile", use_container_width=True):
+                st.session_state.viewing_history_item = st.session_state.eval_history[selected_id]
+                st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # Show detailed view if selected
     if st.session_state.viewing_history_item:
         item = st.session_state.viewing_history_item
         res = item["result"]
         st.markdown("---")
-        st.markdown(f"## 🧐 Details: {item['candidate_name']}")
-        st.caption(f"Analyzed on {item['timestamp']}")
+        st.markdown(f'<h2 style="color:var(--primary)">🧐 Deep-Dive: {item["candidate_name"]}</h2>', unsafe_allow_html=True)
+        st.caption(f"Analysis Registry Date: {item['timestamp']}")
         
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Match Score", f"{res.match_percentage}%")
-        with col2:
-            st.metric("Ranking", res.ranking)
-        with col3:
-            st.metric("Skills Found", len(res.matched_skills))
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            st.markdown(f'<div class="glass-card" style="text-align:center;"><h4>Match Score</h4><h2>{res.match_percentage}%</h2></div>', unsafe_allow_html=True)
+        with m2:
+            st.markdown(f'<div class="glass-card" style="text-align:center;"><h4>Rank</h4><h2>{res.ranking}</h2></div>', unsafe_allow_html=True)
+        with m3:
+            st.markdown(f'<div class="glass-card" style="text-align:center;"><h4>Skills</h4><h2>{len(res.matched_skills)}</h2></div>', unsafe_allow_html=True)
         
-        st.markdown("### 📝 Summary")
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("#### 🖋️ AI Summary")
         st.write(res.candidate_summary)
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        st.markdown("### 🛠 Skills")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.success("Matched Skills")
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+            st.success("Matched Competencies")
             st.write(", ".join(res.matched_skills))
-        with c2:
-            st.error("Missing Skills")
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_s2:
+            st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+            st.error("Missing Requirements")
             st.write(", ".join(res.missing_skills))
+            st.markdown('</div>', unsafe_allow_html=True)
             
-        st.markdown("### 🔍 Matching Methodology")
-        st.write(getattr(res, 'matching_explanation', 'No detailed methodology available for this record.'))
+        st.markdown('<div class="glass-card" style="border-left: 5px solid #6366f1;">', unsafe_allow_html=True)
+        st.markdown("#### 💡 Historical Methodology")
+        st.write(getattr(res, 'matching_explanation', 'Detailed scoring logic not available for this legacy record.'))
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown("### ❓ Interview Questions")
-        for q in res.interview_questions:
-            st.markdown(f"🔹 {q}")
-
-        if st.button("🏃 Close Details"):
+        if st.button("🏃 Close Vault Profile", use_container_width=True):
             st.session_state.viewing_history_item = None
             st.rerun()
 
 with tabs[3]:
-    st.markdown('<h2 class="tab-subheader">☀️ Recruitment ChatBot</h2>', unsafe_allow_html=True)
-    st.write("")
-    st.markdown("---")
+    st.markdown('<h2 class="tab-subheader">☀️ Recruitment Expert AI</h2>', unsafe_allow_html=True)
     
+    st.markdown('<div class="glass-card" style="margin-bottom:10px;">', unsafe_allow_html=True)
+    st.info("👋 Hello! I am your Recruitment Intelligence expert. Ask me about candidate trends, JD optimization, or app features.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    for message in st.session_state.messages:
-        role_class = "user-bubble" if message["role"] == "user" else "assistant-bubble"
-        st.markdown(f"""
-            <div class="chat-bubble {role_class}">
-                {message["content"]}
-            </div>
-        """, unsafe_allow_html=True)
+    # Chat Container
+    chat_container = st.container()
+    with chat_container:
+        for message in st.session_state.messages:
+            role_class = "user-bubble" if message["role"] == "user" else "assistant-bubble"
+            avatar = "👤" if message["role"] == "user" else "☀️"
+            st.markdown(f"""
+                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:15px;">
+                    <div style="font-size:0.7rem; color:var(--text-muted); align-self:{'flex-end' if message['role'] == 'user' else 'flex-start'}; margin-bottom:2px;">
+                        {avatar} {message['role'].upper()}
+                    </div>
+                    <div class="chat-bubble {role_class}">
+                        {message["content"]}
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
 
     # React to user input
-    if prompt := st.chat_input("Ask me anything about the app or recruitment..."):
-        # Display user message in chat message container
-        st.chat_message("user").markdown(prompt)
-        # Add user message to chat history
+    if prompt := st.chat_input("Message the HR Brain..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
+        st.rerun() # Rerun to show user message immediately
 
-        with st.spinner("AI is thinking..."):
+    if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
+        with st.spinner("Expert is typing..."):
             try:
                 assistant_response = analyzer.chat(
-                    prompt, 
+                    st.session_state.messages[-1]["content"], 
                     st.session_state.messages[:-1],
-                    model_name=selected_model,
-                    temperature=temp_val,
-                    max_tokens=top_p_val,
-                    provider=provider_key,
-                    api_key=api_key_val,
-                    ollama_url=ollama_url,
-                    azure_config=azure_config
+                    model_name=selected_model, temperature=temp_val, max_tokens=top_p_val,
+                    provider=provider_key, api_key=api_key_val, ollama_url=ollama_url, azure_config=azure_config
                 )
-                
-                # Display assistant response
-                st.markdown(f"""
-                    <div class="chat-bubble assistant-bubble">
-                        {assistant_response}
-                    </div>
-                """, unsafe_allow_html=True)
-                # Add assistant response to chat history
                 st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+                st.rerun()
             except Exception as e:
-                st.error(f"Chat failed: {e}")
+                st.error(f"Brain connection failed: {e}")
 
-    if st.button("Clear Chat History", type="secondary"):
+    if st.button("🗑️ Reset Brain Conversation", type="secondary", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
 with tabs[4]:
-    st.markdown('<h2 class="tab-subheader">🛡️ Intelligence Control Center</h2>', unsafe_allow_html=True)
-    st.write("")
-    st.markdown("""
-        <div class="glass-card" style="padding: 15px; border-left: 5px solid #a78bfa; margin-bottom: 20px;">
-            <h4 style="margin:0;">⚙️ Engine Configuration</h4>
-            <p style="margin:5px 0 0 0; font-size: 0.9rem; opacity: 0.8;">
-                Manage AI providers, API keys, and model parameters securely.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<h2 class="tab-subheader">🛠️ System Control & Core Settings</h2>', unsafe_allow_html=True)
+    
     # 1. Admin Password Security
     if "settings_unlocked" not in st.session_state:
         st.session_state.settings_unlocked = False
@@ -794,25 +770,26 @@ with tabs[4]:
     ADMIN_PASSWORD = "admin123" 
     
     if not st.session_state.settings_unlocked:
-        st.warning("🔒 Technical settings are locked for unauthorized users.")
-        c1, c2 = st.columns([3, 1])
-        with c1:
-            admin_pass = st.text_input("Enter Admin Password to Unlock Settings", type="password", key="main_admin_pass")
-        with c2:
-            st.write("") # Spacing
-            st.write("")
-            if st.button("🔓 Unlock Settings", use_container_width=True):
-                if admin_pass == ADMIN_PASSWORD:
-                    st.session_state.settings_unlocked = True
-                    st.success("Access Granted!")
-                    st.rerun()
-                else:
-                    st.error("Invalid Administrative Password")
+        st.markdown('<div class="glass-card" style="text-align:center; padding: 50px 20px;">', unsafe_allow_html=True)
+        st.markdown("### 🔐 Security Wall")
+        st.markdown("Technical engine settings are encrypted and locked.")
+        admin_pass = st.text_input("Enter Admin Access Key", type="password", key="main_admin_pass", label_visibility="collapsed")
+        if st.button("🔓 Authenticate & Unlock", use_container_width=True):
+            if admin_pass == ADMIN_PASSWORD:
+                st.session_state.settings_unlocked = True
+                st.success("Identity Verified!")
+                st.rerun()
+            else:
+                st.error("Access Denied: Incorrect Password")
+        st.markdown('</div>', unsafe_allow_html=True)
     else:
         # Unlock logic
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         col_header, col_lock = st.columns([4, 1])
+        with col_header:
+            st.markdown("### ☀️ Model & Engine Grid")
         with col_lock:
-            if st.button("🔒 Lock Settings", use_container_width=True):
+            if st.button("🔒 Revoke Access", use_container_width=True):
                 st.session_state.settings_unlocked = False
                 st.rerun()
         
