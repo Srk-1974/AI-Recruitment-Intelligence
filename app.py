@@ -571,6 +571,15 @@ with tabs[0]:
                     </div>
                     """, unsafe_allow_html=True)
 
+                    st.markdown("### 🔍 AI Matching Methodology")
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 4px solid #facc15;">
+                        <p style="margin:0; font-size: 0.95rem; line-height: 1.6;">
+                            {result.matching_explanation}
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
                     st.markdown("### ❓ AI-Generated Interview Questions")
                     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                     questions = getattr(result, 'interview_questions', [])
@@ -702,6 +711,9 @@ with tabs[2]:
             st.error("Missing Skills")
             st.write(", ".join(res.missing_skills))
             
+        st.markdown("### 🔍 Matching Methodology")
+        st.write(getattr(res, 'matching_explanation', 'No detailed methodology available for this record.'))
+
         st.markdown("### ❓ Interview Questions")
         for q in res.interview_questions:
             st.markdown(f"🔹 {q}")

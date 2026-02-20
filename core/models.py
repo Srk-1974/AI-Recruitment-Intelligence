@@ -8,6 +8,7 @@ class EvaluationResult(BaseModel):
     experience_evaluation: str
     candidate_summary: str
     ranking: str # Strong Match, Moderate Match, Weak Match
+    matching_explanation: str = "No detailed explanation provided."
     interview_questions: List[str] = []
 
 class AnalysisRequest(BaseModel):

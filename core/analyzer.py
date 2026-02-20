@@ -29,7 +29,8 @@ class HRAnalyzer:
             4. Experience Evaluation: Evaluate if the candidate's years and depth of experience are relevant.
             5. Candidate Summary: A short professional summary (2-3 sentences) of suitability.
             6. Ranking: One of "Strong Match", "Moderate Match", or "Weak Match".
-            7. Interview Questions: Generate 3-5 high-impact interview questions tailored to this candidate's specific resume and the JD requirements. Focus on validating their claimed skills or probing areas where they might be weak.
+            7. Matching Explanation: Provide a detailed breakdown of the logic used to calculate the match percentage. Explain the weight given to technical skills vs. experience, and how specific gaps influenced the final score.
+            8. Interview Questions: Generate 3-5 high-impact interview questions tailored to this candidate's specific resume and the JD requirements. Focus on validating their claimed skills or probing areas where they might be weak.
 
             Guidelines:
             - Be objective and realistic.
@@ -50,6 +51,7 @@ class HRAnalyzer:
               "experience_evaluation": "detailed text",
               "candidate_summary": "summary text",
               "ranking": "Strong/Moderate/Weak Match",
+              "matching_explanation": "detailed breakdown of scoring logic",
               "interview_questions": ["question 1", "question 2", "question 3"]
             }}
             """
