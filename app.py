@@ -15,7 +15,7 @@ IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 # Page Config
 st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="☀️", initial_sidebar_state="expanded")
 
-# Version: 1.7.3 - Default Model Fix (Sync: 2026-02-18)
+# Version: 1.7.3 - Ultra Premium UI (Sync: 2026-02-19)
 # Initialize Session States
 if "eval_history" not in st.session_state:
     st.session_state.eval_history = []
@@ -164,27 +164,31 @@ st.markdown("""
 
     .main {
         background-color: var(--bg-main);
-        background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-                          radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
+            radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+        background-attachment: fixed;
     }
 
     /* Glassmorphism Card Style */
     .glass-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        padding: 24px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        padding: 28px;
         margin-bottom: 24px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.02);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .glass-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(99, 102, 241, 0.3);
-        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.1), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
+        transform: translateY(-5px) scale(1.005);
+        border-color: rgba(99, 102, 241, 0.4);
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 0 40px 80px -20px rgba(99, 102, 241, 0.12);
     }
 
     /* Metric Cards */
@@ -259,33 +263,52 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
     }
 
-    /* Pill Tabs */
+    /* Premium Deep Glass Navigation */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 12px;
-        background-color: white;
-        padding: 8px 12px;
-        border-radius: 16px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        border: 1px solid #f1f5f9;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 10px 15px;
+        border-radius: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 48px;
-        border-radius: 12px !important;
+        height: 54px;
+        border-radius: 25px !important;
         background-color: transparent !important;
         border: none !important;
-        padding: 0 24px !important;
-        transition: all 0.3s ease !important;
+        padding: 0 30px !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         color: var(--text-muted) !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         font-family: 'Outfit', sans-serif;
+        font-size: 1.05rem !important;
+        letter-spacing: 0.3px;
+    }
+
+    .stTabs [data-baseweb="tab"]:hover {
+        color: var(--primary) !important;
+        background: rgba(99, 102, 241, 0.05) !important;
     }
 
     .stTabs [aria-selected="true"] {
-        background: var(--bg-main) !important;
-        color: var(--primary) !important;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        color: white !important;
         font-weight: 700 !important;
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    /* Remove the default Streamlit underline for tabs */
+    .stTabs [data-baseweb="tab-highlight"] {
+        display: none !important;
     }
 
     /* Chat Bubbles */
@@ -399,33 +422,35 @@ if not check_password():
 # Sidebar Branding with Logo
 with st.sidebar:
     st.markdown("""
-        <div style="margin-bottom: 25px;">
+        <div style="margin-bottom: 30px;">
             <div style="
-                background: linear-gradient(135deg, #4f46e5, #6366f1);
-                padding: 12px 16px;
-                border-radius: 14px;
+                background: linear-gradient(135deg, #1e1b4b, #312e81);
+                padding: 18px;
+                border-radius: 20px;
                 border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             ">
-                <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
                     <div style="
-                        background: rgba(255, 255, 255, 0.2);
-                        padding: 8px;
-                        border-radius: 8px;
+                        background: linear-gradient(135deg, #6366f1, #a855f7);
+                        padding: 10px;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
                     ">
-                        <span style="font-size: 18px;">☀️</span>
+                        <span style="font-size: 22px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
-                        <p style="margin: 0; font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.5px;">BHADRADRI</p>
-                        <p style="margin: 0; font-size: 8px; color: rgba(255, 255, 255, 0.7); letter-spacing: 1.5px; text-transform: uppercase;">Portal Pro</p>
+                        <p style="margin: 0; font-size: 16px; font-weight: 800; color: white; letter-spacing: -0.5px; line-height: 1.1;">BHADRADRI</p>
+                        <p style="margin: 2px 0 0 0; font-size: 9px; color: rgba(255, 255, 255, 0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">Intelligence Pro</p>
                     </div>
                 </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("## 🛡️ HR Intelligence v1.7.3")
-    st.caption("🟢 Production Mode Active")
-    st.caption("🔄 Last Sync: Feb 18, 12:45 EST")
+    st.markdown("## 🛡️ HR Core v1.7.3")
+    st.caption("🟢 Neural Network Active")
+    st.caption("🔄 Last Updated: Feb 19, 2026")
     if st.button("🚪 Logout"):
         # Clear all session state to force a full reset to defaults upon next login
         for key in list(st.session_state.keys()):
