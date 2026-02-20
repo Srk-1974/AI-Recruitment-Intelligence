@@ -66,77 +66,84 @@ def check_password():
 
     # Logo and Header for Login Page
     st.markdown("""
-        <div style="text-align: center; margin: 40px auto 20px;">
+        <div style="text-align: center; margin: 80px auto 40px;">
             <div style="
-                background: linear-gradient(135deg, #4f46e5, #818cf8);
-                padding: 30px 40px;
-                border-radius: 24px;
-                box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+                background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+                padding: 40px 60px;
+                border-radius: 32px;
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
                 display: inline-block;
                 border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                overflow: hidden;
             ">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 24px;">
+                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);"></div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 30px; position: relative; z-index: 1;">
                     <div style="
-                        background: rgba(255, 255, 255, 0.2);
-                        padding: 15px;
-                        border-radius: 16px;
-                        backdrop-filter: blur(10px);
+                        background: linear-gradient(135deg, #6366f1, #a855f7);
+                        padding: 20px;
+                        border-radius: 20px;
+                        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                     ">
-                        <span style="font-size: 48px;">☀️</span>
+                        <span style="font-size: 56px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
                         <h1 style="
                             margin: 0;
-                            font-size: 42px;
-                            font-weight: 800;
+                            font-size: 52px;
+                            font-weight: 900;
                             color: #ffffff;
-                            letter-spacing: -1px;
+                            letter-spacing: -2px;
                             line-height: 1;
                         ">BHADRADRI</h1>
                         <p style="
-                            margin: 4px 0 0 0;
-                            font-size: 14px;
-                            color: rgba(255, 255, 255, 0.8);
-                            letter-spacing: 4px;
-                            font-weight: 500;
+                            margin: 6px 0 0 0;
+                            font-size: 16px;
+                            color: rgba(255, 255, 255, 0.6);
+                            letter-spacing: 5px;
+                            font-weight: 600;
                             text-transform: uppercase;
-                        ">Technology Inc.</p>
+                        ">Intelligence Pro</p>
                     </div>
                 </div>
             </div>
-            <h2 style="margin-top: 30px; font-size: 28px; font-weight: 700; color: #1e293b; letter-spacing: -0.5px;">Recruitment Intelligence Pro</h2>
-            <p style="opacity: 0.5; font-size: 14px; color: #64748b;">Enterprise Grade AI Orchestration</p>
-        </div>
-        <div style="max-width: 450px; margin: 0 auto 30px; text-align: center;">
-             <div style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                <span style="color: #64748b; font-size: 0.9rem;">Please sign in to access your dashboard</span>
-             </div>
+            <h2 style="margin-top: 40px; font-size: 32px; font-weight: 800; color: #1e1b4b; letter-spacing: -1px;">Enterprise Access Gateway</h2>
+            <p style="opacity: 0.6; font-size: 16px; color: #64748b; font-weight: 500;">Authorized Personnel Only</p>
         </div>
     """, unsafe_allow_html=True)
 
     with st.container():
-        cols = st.columns([1, 2, 1])
+        cols = st.columns([1, 1.5, 1])
         with cols[1]:
-            password = st.text_input("Password", type="password", label_visibility="collapsed")
+            st.markdown("""
+                <div class="glass-card" style="padding: 40px; text-align: center; border: 1px solid rgba(99, 102, 241, 0.2);">
+                    <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 25px; font-weight: 500;">Secure Authentication Required</p>
+            """, unsafe_allow_html=True)
+            
+            password = st.text_input("Access Key", type="password", placeholder="Enter your security token", label_visibility="collapsed")
+            
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
             
             c1, c2 = st.columns(2)
             with c1:
-                if st.button("🚀 Login", use_container_width=True):
+                if st.button("🚀 Authenticate", use_container_width=True):
                     if password == PRODUCTION_PASSWORD:
                         st.session_state["password_correct"] = True
                         st.rerun()
                     else:
                         st.session_state["password_incorrect"] = True
             with c2:
-                if st.button("✖️ Cancel", use_container_width=True):
-                    st.session_state["password"] = ""
+                if st.button("✖️ Reset", use_container_width=True):
+                    st.session_state["password_incorrect"] = False
                     st.rerun()
 
             if st.session_state.get("password_incorrect", False):
-                st.markdown('<p style="color: #ef4444; text-align: center; margin-top: 10px;">❌ Wrong password! Please try again.</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #ef4444; text-align: center; margin-top: 20px; font-weight: 600; font-size: 0.9rem;">🚫 Invalid Security Key. Access Denied.</p>', unsafe_allow_html=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
     
     return False
 
@@ -605,10 +612,19 @@ with tabs[0]:
         st.write(result.experience_evaluation)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="glass-card" style="border-left: 5px solid #facc15;">', unsafe_allow_html=True)
-        st.markdown("#### 🔍 AI Matching Methodology & Scorecard")
-        st.markdown(getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.'))
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="glass-card" style="border: 1px solid rgba(250, 204, 21, 0.3); background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250, 204, 21, 0.05) 100%);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <div style="background: #facc15; padding: 10px; border-radius: 12px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);">
+                    <span style="font-size: 20px;">🔍</span>
+                </div>
+                <h4 style="margin: 0; font-weight: 800; color: #854d0e; letter-spacing: -0.5px;">AI Matching Methodology & Scorecard</h4>
+            </div>
+            <div style="font-family: 'Inter', sans-serif;">
+                {getattr(result, 'matching_explanation', 'Detailed scoring logic not available for this model.')}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("#### ❓ Recommended Interview Questions")
@@ -899,7 +915,7 @@ with tabs[4]:
             render_api_key_ui_main("OpenAI", "OpenAI API Key")
 
         elif st.session_state.current_provider == "Sarvam AI":
-            available_models = ["sarvam-2b-v0.5", "yoddha-2b", "openhathi-7b-hi-v0.1-base"]
+            available_models = ["sarvam-m", "sarvam-30b", "sarvam-105b"]
             render_api_key_ui_main("SarvamAI", "Sarvam API Key")
 
         elif st.session_state.current_provider == "DeepSeek":
