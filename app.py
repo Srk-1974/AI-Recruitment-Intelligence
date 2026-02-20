@@ -490,6 +490,14 @@ if "current_provider" not in st.session_state:
     st.session_state.current_provider = st.session_state.api_config.get("last_provider", "Groq")
 if "current_model" not in st.session_state:
     st.session_state.current_model = st.session_state.api_config.get("last_model", "llama-3.3-70b-versatile")
+
+# --- Safety Check: Provider/Model Compatibility Fix ---
+# Ensures Sarvam AI doesn't crash with HTTP 400 if an old model is cached
+if st.session_state.current_provider == "Sarvam AI":
+    valid_sarvam_models = ["sarvam-m", "sarvam-30b", "sarvam-105b"]
+    if st.session_state.current_model not in valid_sarvam_models:
+        st.session_state.current_model = "sarvam-m" # Reset to safe default
+
 if "current_temp" not in st.session_state:
     st.session_state.current_temp = 0.1
 if "current_max_tokens" not in st.session_state:
