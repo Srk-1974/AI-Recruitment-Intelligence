@@ -265,18 +265,22 @@ st.markdown("""
 
     /* Premium Deep Glass Navigation */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 20px;
+        gap: 8px;
         background: rgba(255, 255, 255, 0.6) !important;
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        padding: 10px 15px;
+        padding: 8px;
         border-radius: 30px;
         margin-bottom: 40px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         border: 1px solid rgba(255, 255, 255, 0.4);
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        overflow-x: auto;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for clean look */
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -284,7 +288,7 @@ st.markdown("""
         border-radius: 25px !important;
         background-color: transparent !important;
         border: none !important;
-        padding: 0 30px !important;
+        padding: 0 20px !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         color: var(--text-muted) !important;
         font-weight: 600 !important;
@@ -517,7 +521,7 @@ st.markdown('<p style="font-size: 1.2rem; color: #64748b; margin-top: -10px;">En
 st.markdown('<div style="height: 2px; background: linear-gradient(90deg, #6366f1 0%, transparent 100%); margin: 20px 0 40px 0;"></div>', unsafe_allow_html=True)
 
 # Tabs Configuration
-tabs = st.tabs(["📄 Single Evaluation", "👥 Batch Ranking", "📜 Analysis History", "💬 Recruitment ChatBot", "⚙️ Admin Settings"])
+tabs = st.tabs(["📄 Evaluation", "👥 Batch Ranking", "📜 History Vault", "💬 Expert AI", "⚙️ Admin"])
 
 with tabs[0]:
     st.markdown('<h2 class="tab-subheader">📄 Single Resume Evaluation</h2>', unsafe_allow_html=True)
