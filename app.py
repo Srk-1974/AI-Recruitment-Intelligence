@@ -64,50 +64,54 @@ def check_password():
 
     # Logo and Header for Login Page
     st.markdown("""
-        <div style="text-align: center; margin: 50px auto 30px;">
+        <div style="text-align: center; margin: 40px auto 20px;">
             <div style="
-                background: linear-gradient(135deg, #4c1d95, #6d28d9);
-                padding: 20px 50px;
-                border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(109, 40, 217, 0.2);
+                background: linear-gradient(135deg, #4f46e5, #818cf8);
+                padding: 30px 40px;
+                border-radius: 24px;
+                box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
                 display: inline-block;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             ">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 24px;">
                     <div style="
                         background: rgba(255, 255, 255, 0.2);
-                        padding: 12px;
-                        border-radius: 8px;
+                        padding: 15px;
+                        border-radius: 16px;
+                        backdrop-filter: blur(10px);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                     ">
-                        <span style="font-size: 42px;">☀️</span>
+                        <span style="font-size: 48px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
                         <h1 style="
                             margin: 0;
-                            font-size: 36px;
+                            font-size: 42px;
                             font-weight: 800;
-                            color: #facc15;
-                            letter-spacing: 2px;
-                            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            color: #ffffff;
+                            letter-spacing: -1px;
+                            line-height: 1;
                         ">BHADRADRI</h1>
                         <p style="
-                            margin: 5px 0 0 0;
-                            font-size: 13px;
-                            color: #fef08a;
+                            margin: 4px 0 0 0;
+                            font-size: 14px;
+                            color: rgba(255, 255, 255, 0.8);
                             letter-spacing: 4px;
                             font-weight: 500;
-                        ">TECHNOLOGY INC.</p>
+                            text-transform: uppercase;
+                        ">Technology Inc.</p>
                     </div>
                 </div>
             </div>
-            <h2 style="margin-top: 25px; font-size: 24px; color: #5b21b6;">HR Intelligence Assistant</h2>
-            <p style="opacity: 0.6; font-size: 14px; color: #1e293b;">© 2026 Bhadradri Technologies Inc. All Rights Reserved</p>
+            <h2 style="margin-top: 30px; font-size: 28px; font-weight: 700; color: #1e293b; letter-spacing: -0.5px;">Recruitment Intelligence Pro</h2>
+            <p style="opacity: 0.5; font-size: 14px; color: #64748b;">Enterprise Grade AI Orchestration</p>
         </div>
-        <div class="glass-card" style="max-width: 400px; margin: 30px auto; background: white;">
-            <h2 style="text-align: center; color: #1e293b;">🔑 Recruitment Intelligence Portal</h2>
-            <p style="text-align: center; opacity: 0.7; color: #1e293b;">Production Environment Secure Login</p>
+        <div style="max-width: 450px; margin: 0 auto 30px; text-align: center;">
+             <div style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <span style="color: #64748b; font-size: 0.9rem;">Please sign in to access your dashboard</span>
+             </div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -134,204 +138,232 @@ def check_password():
     
     return False
 
-# --- Custom CSS for Premium Look ---
+# --- Custom CSS for Premium Enterprise Look ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
     
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #8b5cf6;
+        --accent: #facc15;
+        --bg-main: #f8fafc;
+        --sidebar-bg: #0f172a;
+        --card-bg: rgba(255, 255, 255, 0.8);
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --glass-border: rgba(99, 102, 241, 0.1);
+    }
+
     html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Outfit', sans-serif;
     }
 
     .main {
-        background-color: #ffffff;
-        color: #1e293b;
+        background-color: var(--bg-main);
+        background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                          radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
     }
 
-    .stApp {
-        background-color: #ffffff;
-    }
-
-    /* Selection Color */
-    ::selection {
-        background: #fde68a;
-        color: #1e293b;
-    }
-
-    /* Glassmorphism containers updated for light theme */
+    /* Glassmorphism Card Style */
     .glass-card {
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 16px;
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
         padding: 24px;
-        margin-bottom: 20px;
-        transition: all 0.3s ease;
-        color: #1e293b;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .glass-card:hover {
-        border-color: rgba(139, 92, 246, 0.4);
-        box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
+        transform: translateY(-4px);
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.1), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
     }
 
-    /* Custom Tags */
-    .skill-tag {
-        display: inline-block;
-        padding: 6px 14px;
-        margin: 4px;
-        border-radius: 20px;
-        background: rgba(139, 92, 246, 0.1);
-        color: #6d28d9;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-    
-    .missing-tag {
-        background: rgba(239, 68, 68, 0.1);
-        color: #dc2626;
-        border-color: rgba(220, 38, 38, 0.2);
+    /* Metric Cards */
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    /* Buttons */
+    /* Sidebar Customization */
+    section[data-testid="stSidebar"] {
+        background-color: var(--sidebar-bg) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    section[data-testid="stSidebar"] .stMarkdown h2, 
+    section[data-testid="stSidebar"] .stMarkdown p,
+    section[data-testid="stSidebar"] .stCaption {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* Button Styling */
     .stButton>button {
-        background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         color: white;
         border: none;
-        border-radius: 10px;
-        padding: 12px 24px;
-        font-weight: 700;
+        border-radius: 12px;
+        padding: 14px 28px;
+        font-weight: 600;
+        font-size: 1rem;
         letter-spacing: 0.5px;
-        transition: transform 0.2s;
-        width: 100%;
+        transition: all 0.3s ease;
+        text-transform: none;
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
     }
     
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        transform: scale(1.02);
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+    
+    .stButton>button:active {
+        transform: scale(0.98);
     }
 
+    /* Sidebar Specific Buttons */
+    [data-testid="stSidebar"] .stButton>button {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        backdrop-filter: blur(5px);
+    }
+    
+    [data-testid="stSidebar"] .stButton>button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: var(--primary) !important;
+    }
 
-    /* Beautiful Pill-Styled Tabs */
+    /* Input Fields */
+    .stTextArea textarea, .stTextInput input {
+        border-radius: 12px !important;
+        border: 1px solid #e2e8f0 !important;
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stTextArea textarea:focus, .stTextInput input:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    }
+
+    /* Pill Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background-color: #f8fafc;
-        padding: 8px;
-        border-radius: 50px;
-        margin-bottom: 25px;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        gap: 12px;
+        background-color: white;
+        padding: 8px 12px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 45px;
-        border-radius: 25px !important;
+        height: 48px;
+        border-radius: 12px !important;
         background-color: transparent !important;
         border: none !important;
         padding: 0 24px !important;
         transition: all 0.3s ease !important;
-        color: #64748b !important;
-        font-weight: 600 !important;
+        color: var(--text-muted) !important;
+        font-weight: 500 !important;
+        font-family: 'Outfit', sans-serif;
     }
 
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-        color: white !important;
-        box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3) !important;
+        background: var(--bg-main) !important;
+        color: var(--primary) !important;
+        font-weight: 700 !important;
     }
 
-    .stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {
-        background-color: rgba(124, 58, 237, 0.05) !important;
-        color: #7c3aed !important;
-    }
-
-    /* Subheader with gradient underline */
-    .tab-subheader {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 20px;
-        position: relative;
-        display: inline-block;
-        padding-bottom: 8px;
-    }
-    .tab-subheader::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(90deg, #7c3aed, #c4b5fd);
-        border-radius: 2px;
-    }
-
-    /* ChatBot Message Bubbles */
+    /* Chat Bubbles */
     .chat-bubble {
-        padding: 12px 18px;
-        border-radius: 15px;
-        margin: 5px 0;
+        padding: 16px 20px;
+        border-radius: 18px;
+        margin-bottom: 12px;
         max-width: 85%;
-        line-height: 1.5;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
+    
     .user-bubble {
-        background: #f1f5f9;
-        color: #1e293b;
-        align-self: flex-end;
-        border-bottom-right-radius: 2px;
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
     }
+    
     .assistant-bubble {
-        background: #ffffff;
-        color: #1e293b;
-        border-left: 4px solid #7c3aed;
-        border-bottom-left-radius: 2px;
+        background: white;
+        color: var(--text-main);
+        border: 1px solid #f1f5f9;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
-    /* Headers */
-    /* Headers */
-    h1 {
-        color: #5b21b6;
-        font-weight: 800 !important;
+    /* Skill Tags */
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        margin: 4px;
+        border-radius: 30px;
+        background: rgba(99, 102, 241, 0.08);
+        color: var(--primary-dark);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
     }
     
-    /* Better Sidebar Visibility for Light Theme */
-    [data-testid="stSidebar"] {
-        background-color: #fef9c3 !important;
-        border-right: 1px solid rgba(139, 92, 246, 0.2);
+    .skill-tag:hover {
+        background: rgba(99, 102, 241, 0.15);
+        transform: scale(1.05);
     }
     
-    /* Better Sidebar Visibility for Light Theme - Target specific containers ONLY, avoid buttons */
-    [data-testid="stSidebar"] .stMarkdown p:not(.logo-exception) {
-        color: #1e293b !important;
+    .missing-tag {
+        background: rgba(ef, 44, 44, 0.08);
+        color: #dc2626;
+        border-color: rgba(220, 38, 38, 0.1);
     }
 
-    /* Ensure sidebar toggle button is always visible */
-    [data-testid="stSidebarNav"] {
-        background-color: transparent !important;
+    /* Subheader with modern underline */
+    .tab-subheader {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
     }
 
-    /* Hide Streamlit Branding and Menu */
+    /* Hide default Streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    header {visibility: hidden;}
 
-    /* FINAL OVERRIDE: Force Sidebar Button Visibility - High Contrast White Text */
-    div[data-testid="stSidebar"] button {
-        background-color: #4c1d95 !important;
-        border: 2px solid #6d28d9 !important;
-        border-radius: 8px !important;
+    /* File Uploader Customization */
+    [data-testid="stFileUploader"] {
+        background-color: white;
+        padding: 20px;
+        border-radius: 16px;
+        border: 2px dashed #e2e8f0;
+        transition: all 0.3s ease;
     }
-
-    /* Target all possible text containers inside the button to force white color */
-    div[data-testid="stSidebar"] button,
-    div[data-testid="stSidebar"] button div, 
-    div[data-testid="stSidebar"] button span, 
-    div[data-testid="stSidebar"] button p,
-    div[data-testid="stSidebar"] button * {
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
-        font-weight: 900 !important;
-        text-decoration: none !important;
+    
+    [data-testid="stFileUploader"]:hover {
+        border-color: var(--primary);
+        background-color: var(--bg-main);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -342,40 +374,25 @@ if not check_password():
 
 # Sidebar Branding with Logo
 with st.sidebar:
-    # Logo at top of sidebar
     st.markdown("""
-        <div style="text-align: center; margin-bottom: 15px;">
+        <div style="margin-bottom: 25px;">
             <div style="
-                background: linear-gradient(135deg, #4c1d95, #6d28d9);
-                padding: 8px 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+                background: linear-gradient(135deg, #4f46e5, #6366f1);
+                padding: 12px 16px;
+                border-radius: 14px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             ">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="
-                        background: rgba(255, 255, 255, 0.15);
-                        padding: 6px;
-                        border-radius: 4px;
+                        background: rgba(255, 255, 255, 0.2);
+                        padding: 8px;
+                        border-radius: 8px;
                     ">
-                        <span style="font-size: 16px;">☀️</span>
+                        <span style="font-size: 18px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
-                        <p class="logo-exception" style="
-                            margin: 0;
-                            font-size: 13px;
-                            font-weight: 900;
-                            color: #facc15 !important;
-                            letter-spacing: 0.8px;
-                            -webkit-text-fill-color: #facc15 !important;
-                        ">BHADRADRI</p>
-                        <p class="logo-exception" style="
-                            margin: 0;
-                            font-size: 7px;
-                            color: #fef08a !important;
-                            letter-spacing: 2px;
-                            font-weight: 600;
-                            -webkit-text-fill-color: #fef08a !important;
-                        ">TECHNOLOGY INC.</p>
+                        <p style="margin: 0; font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.5px;">BHADRADRI</p>
+                        <p style="margin: 0; font-size: 8px; color: rgba(255, 255, 255, 0.7); letter-spacing: 1.5px; text-transform: uppercase;">Portal Pro</p>
                     </div>
                 </div>
             </div>
@@ -446,9 +463,9 @@ if provider_key == "AzureOpenAI":
 else:
     api_key_val = st.session_state.api_config.get(provider_key)
 
-st.markdown('# ☀️ AI Recruitment Intelligence Portal', unsafe_allow_html=True)
-st.markdown("### Professional HR Candidate Analysis & Ranking")
-st.markdown("---")
+st.markdown(' <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 0;">AI Recruitment <span style="color: #6366f1;">Intelligence</span></h1>', unsafe_allow_html=True)
+st.markdown('<p style="font-size: 1.2rem; color: #64748b; margin-top: -10px;">Enterprise Candidate Ranking & Assessment Engine</p>', unsafe_allow_html=True)
+st.markdown('<div style="height: 2px; background: linear-gradient(90deg, #6366f1 0%, transparent 100%); margin: 20px 0 40px 0;"></div>', unsafe_allow_html=True)
 
 # Tabs Configuration
 tabs = st.tabs(["📄 Single Evaluation", "👥 Batch Ranking", "📜 Analysis History", "💬 Recruitment ChatBot", "⚙️ Admin Settings"])
@@ -917,8 +934,8 @@ with tabs[4]:
 
 # Copyright Footer
 st.markdown("""
-    <div style="text-align: center; margin-top: 50px; padding: 20px; opacity: 0.5;">
-        <p style="font-size: 12px;">© 2026 Bhadradri Technologies Inc. All Rights Reserved.</p>
-        <p style="font-size: 11px;">HR Intelligence Assistant | Powered by AI | Version 1.7.3</p>
+    <div style="text-align: center; margin-top: 80px; padding: 40px 20px; border-top: 1px solid #f1f5f9;">
+        <p style="font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px;">© 2026 Bhadradri Technologies Inc.</p>
+        <p style="font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">Enterprise Recruitment Intelligence | v1.7.3</p>
     </div>
 """, unsafe_allow_html=True)
