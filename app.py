@@ -66,45 +66,46 @@ def check_password():
 
     # Logo and Header for Login Page
     st.markdown("""
-        <div style="text-align: center; margin: 80px auto 40px;">
+        <div style="text-align: center; margin: 60px auto 30px;">
             <div style="
                 background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-                padding: 40px 60px;
-                border-radius: 32px;
-                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+                padding: 20px 35px;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
                 display: inline-block;
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 position: relative;
                 overflow: hidden;
             ">
-                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);"></div>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 30px; position: relative; z-index: 1;">
+                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);"></div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 18px; position: relative; z-index: 1;">
                     <div style="
                         background: linear-gradient(135deg, #6366f1, #a855f7);
-                        padding: 20px;
-                        border-radius: 20px;
-                        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 14px;
+                        box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                     ">
-                        <span style="font-size: 56px;">☀️</span>
+                        <span style="font-size: 28px;">☀️</span>
                     </div>
                     <div style="text-align: left;">
                         <h1 style="
                             margin: 0;
-                            font-size: 42px;
+                            font-size: 24px;
                             font-weight: 900;
                             color: #ffffff;
-                            letter-spacing: -1.5px;
+                            letter-spacing: -0.5px;
                             line-height: 1;
                             text-transform: uppercase;
                         ">BHADRADRI</h1>
                         <p style="
-                            margin: 4px 0 0 0;
-                            font-size: 14px;
+                            margin: 2px 0 0 0;
+                            font-size: 10px;
                             color: rgba(255, 255, 255, 0.7);
-                            letter-spacing: 2px;
+                            letter-spacing: 1px;
                             font-weight: 600;
                             text-transform: uppercase;
                         ">Technologies Inc | Intelligence Pro</p>
