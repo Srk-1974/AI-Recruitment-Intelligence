@@ -571,6 +571,10 @@ if provider_key == "AzureOpenAI":
     }
 else:
     api_key_val = st.session_state.api_config.get(provider_key)
+    # Fallback: Check if user has an active unsaved input in the Admin tab
+    live_input_key = f"main_{provider_key}_input"
+    if not api_key_val and live_input_key in st.session_state:
+        api_key_val = st.session_state[live_input_key]
 
 st.markdown(' <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 0;">AI Recruitment <span style="color: #6366f1;">Intelligence</span></h1>', unsafe_allow_html=True)
 st.markdown('<p style="font-size: 1.2rem; color: #64748b; margin-top: -10px;">Enterprise Candidate Ranking & Assessment Engine</p>', unsafe_allow_html=True)

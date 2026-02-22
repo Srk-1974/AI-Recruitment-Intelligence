@@ -61,10 +61,16 @@ class HRAnalyzer:
 
     def _get_llm(self, provider: str, model_name: str, temperature: float, max_tokens: int, api_key: str = None, ollama_url: str = None, azure_config: dict = None):
         """Factory to get the correct LLM based on provider."""
-        # Clean the API key globally (remove spaces, quotes, or Bearer prefix)
+        # Clean the API key globally (remove spaces, quotes, backticks, or Bearer prefix)
         clean_key = None
         if api_key:
-            clean_key = api_key.strip().replace('"', '').replace("'", "")
+            clean_key = api_key.strip().replace('"', '').replace("'", "").replace("`", "").replace(" ", "")
+            
+            # Remove common environment variable prefixes if pasted by mistake
+            for prefix in ["GROQ_API_KEY=", "OPENAI_API_KEY=", "SARVAM_API_KEY=", "DEEPSEEK_API_KEY=", "GEMINI_API_KEY="]:
+                if clean_key.upper().startswith(prefix):
+                    clean_key = clean_key[len(prefix):].strip()
+
             if clean_key.lower().startswith("bearer "):
                 clean_key = clean_key[7:].strip()
 
