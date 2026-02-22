@@ -130,7 +130,7 @@ def check_password():
             
             c1, c2 = st.columns(2)
             with c1:
-                if st.button("🚀 Authenticate", use_container_width=True):
+                if st.button("🚀 Login", use_container_width=True):
                     if password == PRODUCTION_PASSWORD:
                         st.session_state["password_correct"] = True
                         st.rerun()
