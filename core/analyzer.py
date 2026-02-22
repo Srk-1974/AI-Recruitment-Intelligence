@@ -77,7 +77,7 @@ class HRAnalyzer:
         if provider == "OpenAI" and clean_key:
             return ChatOpenAI(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=clean_key)
         elif provider == "Groq" and clean_key:
-            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=clean_key)
+            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, groq_api_key=clean_key)
         elif provider == "SarvamAI" and clean_key:
             try:
                 from sarvamai import SarvamAI
@@ -303,6 +303,11 @@ class HRAnalyzer:
             if json_str:
                 failed_json = json_str[:150] + "..." if len(json_str) > 150 else json_str
                 error_details += f" | ATTEMPTED_JSON: {failed_json}"
+            
+            # Key Masking for troubleshooting
+            if api_key and len(api_key) > 8:
+                masked = f"{api_key[:4]}...{api_key[-4:]}"
+                error_details += f" | KEY_MASK: {masked} (Len: {len(api_key)})"
             
             print(f"DEBUG_V1.7.5: {error_details}")
             checklist_text = " -> ".join(diag)
