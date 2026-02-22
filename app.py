@@ -438,26 +438,31 @@ if not check_password():
 # Sidebar Branding with Logo
 with st.sidebar:
     st.markdown("""
-        <div style="margin-bottom: 30px;">
+        <div style="margin-bottom: 25px;">
             <div style="
-                background: linear-gradient(135deg, #1e1b4b, #312e81);
-                padding: 18px;
-                border-radius: 20px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+                padding: 15px 12px;
+                border-radius: 18px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             ">
-                <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="
                         background: linear-gradient(135deg, #6366f1, #a855f7);
-                        padding: 10px;
+                        width: 44px;
+                        height: 44px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         border-radius: 12px;
-                        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+                        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
+                        flex-shrink: 0;
                     ">
-                        <span style="font-size: 22px;">☀️</span>
+                        <span style="font-size: 24px;">☀️</span>
                     </div>
-                    <div style="text-align: left;">
-                        <p style="margin: 0; font-size: 16px; font-weight: 800; color: white; letter-spacing: -0.5px; line-height: 1.1;">BHADRADRI</p>
-                        <p style="margin: 2px 0 0 0; font-size: 9px; color: rgba(255, 255, 255, 0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">Intelligence Pro</p>
+                    <div style="overflow: hidden;">
+                        <p style="margin: 0; font-size: 19px; font-weight: 800; color: white; letter-spacing: -0.8px; line-height: 1; text-transform: uppercase;">BHADRADRI</p>
+                        <p style="margin: 3px 0 0 0; font-size: 10px; color: rgba(255, 255, 255, 0.7); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; white-space: nowrap;">Intelligence Pro</p>
                     </div>
                 </div>
             </div>
