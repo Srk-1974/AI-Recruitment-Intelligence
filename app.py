@@ -463,6 +463,51 @@ st.markdown("""
 if not check_password():
     st.stop()
 
+# Initialize Engine Variables first (so sidebar tools can use them)
+if "current_provider" not in st.session_state:
+    st.session_state.current_provider = st.session_state.api_config.get("last_provider", "Groq")
+if "current_model" not in st.session_state:
+    st.session_state.current_model = st.session_state.api_config.get("last_model", "llama-3.3-70b-versatile")
+
+if st.session_state.current_provider == "Sarvam AI":
+    valid_sarvam_models = ["sarvam-m", "sarvam-30b", "sarvam-105b"]
+    if st.session_state.current_model not in valid_sarvam_models:
+        st.session_state.current_model = "sarvam-m"
+
+if "current_temp" not in st.session_state:
+    st.session_state.current_temp = 0.1
+if "current_max_tokens" not in st.session_state:
+    st.session_state.current_max_tokens = st.session_state.api_config.get("last_max_tokens", 3000)
+
+# Map provider and keys for use in Health Check/Tabs
+provider_map = {
+    "Ollama (Local PC)": "Ollama",
+    "Groq": "Groq",
+    "OpenAI": "OpenAI",
+    "Sarvam AI": "SarvamAI",
+    "DeepSeek": "DeepSeek",
+    "Gemini": "Gemini",
+    "Azure OpenAI (Copilot)": "AzureOpenAI"
+}
+provider_key = provider_map.get(st.session_state.current_provider, "Ollama")
+
+api_key_val = None
+azure_config = None
+
+if provider_key == "AzureOpenAI":
+    azure_config = {
+        "endpoint": st.session_state.api_config.get("azure_endpoint", ""),
+        "api_key": st.session_state.api_config.get("azure_key", ""),
+        "deployment_name": st.session_state.api_config.get("azure_deployment", ""),
+        "api_version": st.session_state.api_config.get("azure_version", "2024-02-15-preview")
+    }
+else:
+    # Prioritize LIVE UI Input for the Health Check
+    live_input_key = f"main_{provider_key}_input"
+    api_key_val = st.session_state.get(live_input_key)
+    if not api_key_val:
+        api_key_val = st.session_state.api_config.get(provider_key)
+
 # Sidebar Branding with Logo
 with st.sidebar:
     st.markdown("""
@@ -541,66 +586,6 @@ with st.sidebar:
                         <p style="color: white; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.8;">{str(e)[:100]}...</p>
                     </div>
                 """, unsafe_allow_html=True)
-
-# Initialize Engine Variables at top level (accessible to all tabs)
-# Use session state to persist choices
-if "current_provider" not in st.session_state:
-    st.session_state.current_provider = st.session_state.api_config.get("last_provider", "Groq")
-if "current_model" not in st.session_state:
-    st.session_state.current_model = st.session_state.api_config.get("last_model", "llama-3.3-70b-versatile")
-
-# --- Safety Check: Provider/Model Compatibility Fix ---
-# Ensures Sarvam AI doesn't crash with HTTP 400 if an old model is cached
-if st.session_state.current_provider == "Sarvam AI":
-    valid_sarvam_models = ["sarvam-m", "sarvam-30b", "sarvam-105b"]
-    if st.session_state.current_model not in valid_sarvam_models:
-        st.session_state.current_model = "sarvam-m" # Reset to safe default
-
-if "current_temp" not in st.session_state:
-    st.session_state.current_temp = 0.1
-if "current_max_tokens" not in st.session_state:
-    st.session_state.current_max_tokens = st.session_state.api_config.get("last_max_tokens", 3000)
-
-# Set local variables based on session state/config
-provider = st.session_state.current_provider
-selected_model = st.session_state.current_model
-temp_val = st.session_state.current_temp
-top_p_val = st.session_state.current_max_tokens
-ollama_url = "http://localhost:11434" # Default
-api_key_val = None
-azure_config = None
-provider_key = "Ollama"
-
-# Map provider display name to key
-provider_map = {
-    "Ollama (Local PC)": "Ollama",
-    "Groq": "Groq",
-    "OpenAI": "OpenAI",
-    "Sarvam AI": "SarvamAI",
-    "DeepSeek": "DeepSeek",
-    "Gemini": "Gemini",
-    "Azure OpenAI (Copilot)": "AzureOpenAI"
-}
-provider_key = provider_map.get(provider, "Ollama")
-
-# Load existing keys/configs for active provider
-if provider_key == "AzureOpenAI":
-    azure_config = {
-        "endpoint": st.session_state.api_config.get("azure_endpoint", ""),
-        "api_key": st.session_state.api_config.get("azure_key", ""),
-        "deployment_name": st.session_state.api_config.get("azure_deployment", ""),
-        "api_version": st.session_state.api_config.get("azure_version", "2024-02-15-preview")
-    }
-else:
-    # 🚨 CRITICAL FIX (v1.7.5-PRO): Prioritize the LIVE input on the screen
-    # This prevents using an old/invalid key from config if user has typed a new one.
-    live_input_key = f"main_{provider_key}_input"
-    api_key_val = st.session_state.get(live_input_key)
-    
-    # Fallback to config if live input is missing or empty
-    if not api_key_val:
-        api_key_val = st.session_state.api_config.get(provider_key)
-
 st.markdown(' <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 0;">AI Recruitment <span style="color: #6366f1;">Intelligence</span></h1>', unsafe_allow_html=True)
 st.markdown('<p style="font-size: 1.2rem; color: #64748b; margin-top: -10px;">Enterprise Candidate Ranking & Assessment Engine</p>', unsafe_allow_html=True)
 st.markdown('<div style="height: 2px; background: linear-gradient(90deg, #6366f1 0%, transparent 100%); margin: 20px 0 40px 0;"></div>', unsafe_allow_html=True)
