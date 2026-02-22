@@ -111,22 +111,22 @@ def check_password():
                     </div>
                 </div>
             </div>
-            <h2 style="margin-top: 40px; font-size: 32px; font-weight: 800; color: #1e1b4b; letter-spacing: -1px;">Enterprise Access Gateway</h2>
-            <p style="opacity: 0.6; font-size: 16px; color: #64748b; font-weight: 500;">Authorized Personnel Only</p>
+            <h2 style="margin-top: 25px; font-size: 24px; font-weight: 800; color: #1e1b4b; letter-spacing: -0.5px;">Enterprise Access Gateway</h2>
+            <p style="opacity: 0.6; font-size: 13px; color: #64748b; font-weight: 500; margin-top: -5px;">Authorized Personnel Only</p>
         </div>
     """, unsafe_allow_html=True)
 
     with st.container():
-        cols = st.columns([1, 1.5, 1])
+        cols = st.columns([1, 1.2, 1])
         with cols[1]:
             st.markdown("""
-                <div class="glass-card" style="padding: 40px; text-align: center; border: 1px solid rgba(99, 102, 241, 0.2);">
-                    <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 25px; font-weight: 500;">Secure Authentication Required</p>
+                <div class="glass-card" style="padding: 20px 30px; text-align: center; border: 1px solid rgba(99, 102, 241, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 15px; font-weight: 600; letter-spacing: 0.5px;">Secure Authentication Required</p>
             """, unsafe_allow_html=True)
             
-            password = st.text_input("Access Key", type="password", placeholder="Enter your security token", label_visibility="collapsed")
+            password = st.text_input("Access Key", type="password", placeholder="Enter key", label_visibility="collapsed")
             
-            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             
             c1, c2 = st.columns(2)
             with c1:
@@ -142,7 +142,7 @@ def check_password():
                     st.rerun()
 
             if st.session_state.get("password_incorrect", False):
-                st.markdown('<p style="color: #ef4444; text-align: center; margin-top: 20px; font-weight: 600; font-size: 0.9rem;">🚫 Invalid Security Key. Access Denied.</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #ef4444; text-align: center; margin-top: 15px; font-weight: 600; font-size: 0.8rem;">🚫 Invalid Security Key.</p>', unsafe_allow_html=True)
             
             st.markdown("</div>", unsafe_allow_html=True)
     
