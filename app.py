@@ -438,30 +438,30 @@ if not check_password():
 # Sidebar Branding with Logo
 with st.sidebar:
     st.markdown("""
-        <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 12px;">
             <div style="
                 background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-                padding: 8px 10px;
-                border-radius: 14px;
+                padding: 6px 10px;
+                border-radius: 12px;
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             ">
-                <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="
                         background: linear-gradient(135deg, #6366f1, #a855f7);
-                        width: 32px;
-                        height: 32px;
+                        width: 28px;
+                        height: 28px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        border-radius: 8px;
+                        border-radius: 6px;
                         flex-shrink: 0;
                     ">
-                        <span style="font-size: 18px;">☀️</span>
+                        <span style="font-size: 16px;">☀️</span>
                     </div>
-                    <div style="overflow: hidden;">
-                        <p style="margin: 0; font-size: 15px; font-weight: 800; color: white; letter-spacing: -0.5px; line-height: 1; text-transform: uppercase;">BHADRADRI</p>
-                        <p style="margin: 2px 0 0 0; font-size: 7.5px; color: rgba(255, 255, 255, 0.6); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; white-space: nowrap;">Intelligence Pro</p>
+                    <div style="overflow: hidden; line-height: 1.1;">
+                        <p style="margin: 0; font-size: 12px; font-weight: 800; color: white; letter-spacing: -0.2px; text-transform: uppercase; white-space: nowrap;">BHADRADRI Technologies Inc</p>
+                        <p style="margin: 1px 0 0 0; font-size: 7px; color: rgba(255, 255, 255, 0.5); letter-spacing: 0.8px; text-transform: uppercase; font-weight: 600; white-space: nowrap;">Intelligence Pro</p>
                     </div>
                 </div>
             </div>
