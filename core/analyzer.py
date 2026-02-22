@@ -12,6 +12,8 @@ from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesP
 from core.models import EvaluationResult, ChatResponse
 
 class HRAnalyzer:
+    CORE_VERSION = "1.7.5-PRO"
+    
     def __init__(self, model_name: str = "llama-3.3-70b-versatile", ollama_url: str = "http://localhost:11434"):
         self.ollama_base_url = ollama_url
         self.llm = OllamaLLM(model=model_name, base_url=self.ollama_base_url)
@@ -59,31 +61,64 @@ class HRAnalyzer:
 
     def _get_llm(self, provider: str, model_name: str, temperature: float, max_tokens: int, api_key: str = None, ollama_url: str = None, azure_config: dict = None):
         """Factory to get the correct LLM based on provider."""
-        if provider == "OpenAI" and api_key:
-            return ChatOpenAI(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=api_key)
-        elif provider == "Groq" and api_key:
-            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=api_key)
-        elif provider == "SarvamAI" and api_key:
-             return ChatOpenAI(
-                model=model_name,
-                temperature=temperature,
-                max_tokens=max_tokens,
-                api_key=api_key,
-                base_url="https://api.sarvam.ai/v1"
-            )
-        elif provider == "DeepSeek" and api_key:
+        # Clean the API key globally (remove spaces, quotes, or Bearer prefix)
+        clean_key = None
+        if api_key:
+            clean_key = api_key.strip().replace('"', '').replace("'", "")
+            if clean_key.lower().startswith("bearer "):
+                clean_key = clean_key[7:].strip()
+
+        if provider == "OpenAI" and clean_key:
+            return ChatOpenAI(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=clean_key)
+        elif provider == "Groq" and clean_key:
+            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=clean_key)
+        elif provider == "SarvamAI" and clean_key:
+            try:
+                from sarvamai import SarvamAI
+                class SarvamSDKWrapper:
+                    def __init__(self, key, model, temp, tokens):
+                        self.client = SarvamAI(api_subscription_key=key)
+                        self.model = model
+                        self.temp = temp
+                        self.tokens = tokens
+                    def invoke(self, prompt):
+                        # The Sarvam SDK uses client.chat.completions() as a method directly
+                        # NOTE: The current SDK version does NOT accept 'model' as a keyword argument.
+                        # It is selected based on your API subscription level or defaults to sarvam-m.
+                        res = self.client.chat.completions(
+                            messages=[{"role": "user", "content": prompt}],
+                            temperature=self.temp,
+                            max_tokens=self.tokens
+                        )
+                        # The response object structure
+                        if hasattr(res, 'choices') and len(res.choices) > 0:
+                            return res.choices[0].message.content
+                        return str(res)
+                return SarvamSDKWrapper(clean_key, model_name, temperature, max_tokens)
+            except Exception as e:
+                # Fallback to OpenAI compatible if SDK fails
+                # For Sarvam, we MUST use api-subscription-key header and often an empty Bearer
+                return ChatOpenAI(
+                    model=model_name,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                    api_key=clean_key,
+                    base_url="https://api.sarvam.ai/v1",
+                    default_headers={"api-subscription-key": clean_key}
+                )
+        elif provider == "DeepSeek" and clean_key:
             return ChatOpenAI(
                 model=model_name,
                 temperature=temperature,
                 max_tokens=max_tokens,
-                api_key=api_key,
+                api_key=clean_key,
                 base_url="https://api.deepseek.com"
             )
-        elif provider == "Gemini" and api_key:
+        elif provider == "Gemini" and clean_key:
             if ChatGoogleGenerativeAI:
                 import os
-                os.environ["GOOGLE_API_KEY"] = api_key
-                return ChatGoogleGenerativeAI(model=model_name, temperature=temperature, max_output_tokens=max_tokens, google_api_key=api_key)
+                os.environ["GOOGLE_API_KEY"] = clean_key
+                return ChatGoogleGenerativeAI(model=model_name, temperature=temperature, max_output_tokens=max_tokens, google_api_key=clean_key)
             else:
                 raise ImportError("langchain-google-genai not installed")
         elif provider == "AzureOpenAI" and azure_config:
@@ -112,9 +147,11 @@ class HRAnalyzer:
         """Sends the extraction task to the LLM and parses the result."""
         target_model = model_name if model_name else self.llm.model
         prompt = self.prompt_template.format(resume_text=resume_text, jd_text=jd_text)
+        response_text = ""
+        json_str = ""
         try:
             target_model = model_name if model_name else self.llm.model
-            print(f"DEBUG: Analying with Provider={provider}, Model={target_model}, KeyPresent={bool(api_key)}")
+            print(f"DEBUG: Analying with v{self.CORE_VERSION} | Provider={provider}, Model={target_model}")
             llm = self._get_llm(provider, target_model, temperature, max_tokens, api_key, ollama_url, azure_config)
             response = llm.invoke(prompt)
             
@@ -124,57 +161,155 @@ class HRAnalyzer:
             else:
                 response_text = str(response)
             
-            # Clean response text and try to extract JSON
-            response_text = response_text.strip()
-            
-            # Look for JSON between triple backticks first
+            # --- High-Performance JSON Engine (v1.7.5-PRO) ---
             import re
-            json_match = re.search(r"```json\s*(.*?)\s*```", response_text, re.DOTALL)
-            if not json_match:
-                json_match = re.search(r"```\s*(\{.*?\})\s*```", response_text, re.DOTALL)
+            text = response_text.strip()
+
+            # 1. Broad Extraction: Remove markdown and find all { or [ blocks
+            clean_text = re.sub(r'```(?:json)?', '', text).strip()
             
-            if json_match:
-                json_str = json_match.group(1).strip()
-            else:
-                # If no backticks, try to find the first '{' and last '}'
-                first_curly = response_text.find('{')
-                last_curly = response_text.rfind('}')
-                if first_curly != -1 and last_curly != -1:
-                    json_str = response_text[first_curly:last_curly+1].strip()
-                else:
-                    json_str = response_text
-            
-            if not json_str:
-                raise ValueError("LLM returned an empty response.")
+            json_blocks = []
+            # Find every possible start segment
+            starts = [m.start() for m in re.finditer(r'[\{\[]', clean_text)]
+            for s_idx in starts:
+                # Find the last potential closer that appears AFTER this start
+                last_curly = clean_text.rfind('}')
+                last_bracket = clean_text.rfind(']')
+                e_idx = max(last_curly, last_bracket)
                 
-            data = json.loads(json_str)
+                if e_idx > s_idx:
+                    json_blocks.append(clean_text[s_idx:e_idx+1].strip())
+                else:
+                    # Truncated segment: take from start to end of text
+                    json_blocks.append(clean_text[s_idx:].strip())
+            
+            if not json_blocks:
+                # Last resort: use the whole text
+                json_str = clean_text
+            else:
+                # Pick the segment with the most structure (best chance of being the main payload)
+                json_str = max(json_blocks, key=len)
+
+            # --- Smart JSON Repair Logic ---
+            data = None
+            
+            # Pre-cleaning for "Invalid Control Character" errors (ASCII 0-31)
+            # Many LLMs return unescaped newlines or tabs inside strings.
+            def clean_control_chars(s):
+                # Remove actual control characters but keep common structural ones if needed
+                # Actually, json.loads(s, strict=False) handles most cases, 
+                # but we clean extremes here.
+                return re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', s)
+
+            try:
+                # Pre-clean: strip leading conversational noise and control chars
+                json_str = re.sub(r'^[^\{\[\"]*', '', json_str).strip()
+                # Use strict=False to allow unescaped newlines/tabs inside strings
+                data = json.loads(json_str, strict=False)
+            except json.JSONDecodeError:
+                # Emergency Repair for truncated/malformed models
+                r_json = clean_control_chars(json_str.strip())
+                
+                # A. Handle mid-word/mid-sentence truncation
+                r_json = re.sub(r'[a-zA-Z0-9]*\.\.\.\s*$', '', r_json)
+                
+                if not r_json.endswith(('"', '}', ']', 'true', 'false', 'null')) and not r_json[-1].isdigit():
+                    last_safe = max(r_json.rfind(','), r_json.rfind('"'), r_json.rfind(':'), r_json.rfind('{'), r_json.rfind('['))
+                    if last_safe != -1:
+                        r_json = r_json[:last_safe+1].strip()
+                
+                # B. String & List Maintenance
+                r_json = re.sub(r',\s*$', '', r_json)
+                
+                if r_json.count('"') % 2 != 0:
+                    r_json += '"'
+                
+                # C. Balance Structural Tags
+                open_braces = r_json.count('{') - r_json.count('}')
+                open_brackets = r_json.count('[') - r_json.count(']')
+                
+                if open_brackets > 0:
+                    r_json += ']' * open_brackets
+                if open_braces > 0:
+                    r_json += '}' * open_braces
+                
+                try:
+                    data = json.loads(r_json, strict=False)
+                except:
+                    # Final Deep Clean
+                    r_json = re.sub(r',\s*([\]}])', r'\1', r_json)
+                    r_json = re.sub(r',\s*""\s*]', ']', r_json)
+                    data = json.loads(r_json, strict=False)
+            
+
+            # --- Type-Safety Guard (v1.7.5-PRO) ---
+            if data and isinstance(data, dict):
+                # 1. Ensure string fields are strings (not dicts/lists)
+                for str_field in ['matching_explanation', 'candidate_summary', 'experience_evaluation', 'ranking']:
+                    if str_field in data and not isinstance(data[str_field], str):
+                        if isinstance(data[str_field], (dict, list)):
+                            data[str_field] = json.dumps(data[str_field], indent=2)
+                        else:
+                            data[str_field] = str(data[str_field])
+                
+                # 2. Ensure match_percentage is an integer
+                if 'match_percentage' in data:
+                    try:
+                        if isinstance(data['match_percentage'], str):
+                            data['match_percentage'] = int(re.sub(r'[^0-9]', '', data['match_percentage']))
+                        else:
+                            data['match_percentage'] = int(data['match_percentage'])
+                        # Clamp 0-100
+                        data['match_percentage'] = max(0, min(100, data['match_percentage']))
+                    except:
+                        data['match_percentage'] = 0
+
+            # Ensure return is a valid EvaluationResult
             return EvaluationResult(**data)
+
         except Exception as e:
             # Fallback or error handling
             error_details = f"{str(e)}"
             
-            # Special hint for quota issues
-            short_msg = "Analysis Error"
-            summary_hint = f"Troubleshooting: Make sure the model '{target_model}' is correctly loaded."
+            # Diagnostic Checklist
+            diag = []
+            if provider == "Ollama":
+                diag.append("Check local model path")
+                diag.append("Check memory/VRAM")
+            else:
+                diag.append("Verify API Key/Subscription")
+                if hasattr(e, 'status_code'):
+                    diag.append(f"Stat: {e.status_code}")
+
+            is_parse_error = isinstance(e, json.JSONDecodeError) or "extra fields" in error_details.lower() or "validation error" in error_details.lower()
+            
+            short_msg = "Parse Error" if is_parse_error else "Engine Error"
+            summary_hint = f"[{self.CORE_VERSION}] {provider} Diagnostics:"
             
             if "insufficient_quota" in error_details.lower() or "insufficient balance" in error_details.lower() or "402" in error_details:
-                short_msg = "Quota Exceeded / No Balance"
-                summary_hint = "Your API provider account has insufficient credits. Please top up your balance or switch execution providers."
+                short_msg = "Quota Exceeded"
+                summary_hint = "Insufficient Credits."
 
-            if 'response_text' in locals() and response_text:
-                snippet = response_text[:200] + "..." if len(response_text) > 200 else response_text
-                error_details += f" | Raw Snippet: {snippet}"
+            if response_text:
+                snippet = response_text[:250] + "..." if len(response_text) > 250 else response_text
+                error_details += f" | RAW_V1.7.5: {snippet}"
             
-            print(f"Error during analysis: {error_details}")
-            return EvaluationResult(
+            if json_str:
+                failed_json = json_str[:150] + "..." if len(json_str) > 150 else json_str
+                error_details += f" | ATTEMPTED_JSON: {failed_json}"
+            
+            print(f"DEBUG_V1.7.5: {error_details}")
+            checklist_text = " -> ".join(diag)
+            
+            return EvaluationResult(**data) if 'data' in locals() and data else EvaluationResult(
                 match_percentage=0,
                 matched_skills=[],
                 missing_skills=[short_msg],
-                experience_evaluation="The AI failed to complete the request.",
-                candidate_summary=f"{summary_hint} Error logic: {error_details}",
-                ranking="System Error",
-                matching_explanation="Analysis was interrupted. No methodology available.",
-                interview_questions=["Please check your AI configuration."]
+                experience_evaluation=f"SYSTEM CHECK: {checklist_text}",
+                candidate_summary=f"{summary_hint} Detail: {error_details}",
+                ranking="Internal Error",
+                matching_explanation=f"Matching core v{self.CORE_VERSION} encountered a processing exception.",
+                interview_questions=["Please restart the session and try again."]
             )
 
     def chat(self, message: str, history: list, model_name: str = "llama-3.3-70b-versatile", temperature: float = 0.7, max_tokens: int = 1000, provider: str = "Groq", api_key: str = None, ollama_url: str = None, azure_config: dict = None, **kwargs) -> str:

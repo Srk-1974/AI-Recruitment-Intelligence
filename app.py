@@ -15,7 +15,7 @@ IS_CLOUD = "STREAMLIT_RUNTIME_ENV" in os.environ or "ST_CLOUD_APP" in os.environ
 # Page Config
 st.set_page_config(page_title="Intelligent HR Assistant", layout="wide", page_icon="☀️", initial_sidebar_state="expanded")
 
-# Version: 1.7.3 - Ultra Premium UI (Sync: 2026-02-19)
+# Version: 1.7.5-PRO - Ultra Premium UI (Sync: 2026-02-22)
 # Initialize Session States
 if "eval_history" not in st.session_state:
     st.session_state.eval_history = []
@@ -44,10 +44,10 @@ if "api_config" not in st.session_state:
 
 # Initialize Analyzer Early
 @st.cache_resource(ttl=3600)
-def get_analyzer():
+def get_analyzer(version):
     return HRAnalyzer()
 
-analyzer = get_analyzer()
+analyzer = get_analyzer("1.7.5-PRO")
 
 # Simple Authentication Logic
 def check_password():
@@ -464,9 +464,9 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("## 🛡️ HR Core v1.7.3")
+    st.markdown("## 🛡️ HR Core v1.7.5-PRO")
     st.caption("🟢 Neural Network Active")
-    st.caption("🔄 Last Updated: Feb 19, 2026")
+    st.caption("🔄 Last Updated: Feb 22, 2026")
     if st.button("🚪 Logout"):
         # Clear all session state to force a full reset to defaults upon next login
         for key in list(st.session_state.keys()):
@@ -501,7 +501,7 @@ if st.session_state.current_provider == "Sarvam AI":
 if "current_temp" not in st.session_state:
     st.session_state.current_temp = 0.1
 if "current_max_tokens" not in st.session_state:
-    st.session_state.current_max_tokens = 2000
+    st.session_state.current_max_tokens = st.session_state.api_config.get("last_max_tokens", 3000)
 
 # Set local variables based on session state/config
 provider = st.session_state.current_provider
@@ -974,9 +974,13 @@ with tabs[4]:
 
         # 3. Parameters
         st.markdown("### ⚙️ Inference Parameters")
-        new_tokens = st.slider("Max Token Response Limit", 100, 4000, st.session_state.current_max_tokens, 100)
+        
+        # Token Limit Slider
+        new_tokens = st.slider("Max Token Response Limit", 100, 6000, st.session_state.current_max_tokens, 100)
         if new_tokens != st.session_state.current_max_tokens:
             st.session_state.current_max_tokens = new_tokens
+            st.session_state.api_config["last_max_tokens"] = new_tokens
+            save_config(st.session_state.api_config)
             st.rerun()
 
         st.markdown("---")
@@ -986,6 +990,6 @@ with tabs[4]:
 st.markdown("""
     <div style="text-align: center; margin-top: 80px; padding: 40px 20px; border-top: 1px solid #f1f5f9;">
         <p style="font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px;">© 2026 Bhadradri Technologies Inc.</p>
-        <p style="font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">Enterprise Recruitment Intelligence | v1.7.3</p>
+        <p style="font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">Enterprise Recruitment Intelligence | v1.7.5-PRO</p>
     </div>
 """, unsafe_allow_html=True)

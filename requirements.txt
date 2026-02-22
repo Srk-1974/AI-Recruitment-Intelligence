@@ -15,3 +15,4 @@ requests
 # Build Trigger: 2026-02-16-v1
 langchain-openai
 langchain-groq
+sarvamai
