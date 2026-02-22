@@ -508,6 +508,13 @@ else:
     if not api_key_val:
         api_key_val = st.session_state.api_config.get(provider_key)
 
+# Local convenient variables for tabs
+provider = st.session_state.current_provider
+selected_model = st.session_state.current_model
+temp_val = st.session_state.current_temp
+top_p_val = st.session_state.current_max_tokens
+ollama_url = "http://localhost:11434" # Default
+
 # Sidebar Branding with Logo
 with st.sidebar:
     st.markdown("""
