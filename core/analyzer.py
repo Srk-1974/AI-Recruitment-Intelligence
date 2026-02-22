@@ -61,23 +61,29 @@ class HRAnalyzer:
 
     def _get_llm(self, provider: str, model_name: str, temperature: float, max_tokens: int, api_key: str = None, ollama_url: str = None, azure_config: dict = None):
         """Factory to get the correct LLM based on provider."""
-        # Clean the API key globally (remove spaces, quotes, backticks, or Bearer prefix)
+        # --- Ultra-Robust API Key Sanitizer (v1.7.5-PRO) ---
         clean_key = None
         if api_key:
-            clean_key = api_key.strip().replace('"', '').replace("'", "").replace("`", "").replace(" ", "")
+            # 1. Remove obvious wrapping junk (quotes, backticks, outer spaces)
+            clean_key = api_key.strip().replace('"', '').replace("'", "").replace("`", "")
             
-            # Remove common environment variable prefixes if pasted by mistake
-            for prefix in ["GROQ_API_KEY=", "OPENAI_API_KEY=", "SARVAM_API_KEY=", "DEEPSEEK_API_KEY=", "GEMINI_API_KEY="]:
-                if clean_key.upper().startswith(prefix):
-                    clean_key = clean_key[len(prefix):].strip()
-
+            # 2. Handle "Bearer " or "bearer " prefixes BEFORE removing internal spaces
             if clean_key.lower().startswith("bearer "):
                 clean_key = clean_key[7:].strip()
+            
+            # 3. Remove common environment variable prefixes if pasted by mistake
+            for prefix in ["GROQ_API_KEY", "OPENAI_API_KEY", "SARVAM_API_KEY", "DEEPSEEK_API_KEY", "GEMINI_API_KEY"]:
+                if clean_key.upper().startswith(prefix + "="):
+                    clean_key = clean_key[len(prefix)+1:].strip()
+            
+            # 4. Final scrub: remove ALL internal spaces or hidden tabs
+            clean_key = "".join(clean_key.split())
 
         if provider == "OpenAI" and clean_key:
             return ChatOpenAI(model=model_name, temperature=temperature, max_tokens=max_tokens, api_key=clean_key)
         elif provider == "Groq" and clean_key:
-            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, groq_api_key=clean_key)
+            # Use both possible name variations for robustness in different library versions
+            return ChatGroq(model=model_name, temperature=temperature, max_tokens=max_tokens, groq_api_key=clean_key, api_key=clean_key)
         elif provider == "SarvamAI" and clean_key:
             try:
                 from sarvamai import SarvamAI

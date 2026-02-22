@@ -514,11 +514,33 @@ with st.sidebar:
         st.toast("Cache Cleared!")
     
     if st.button("🔥 Health Check", use_container_width=True):
-        st.markdown(f"""
-            <div style="background: rgba(99, 102, 241, 0.2); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px;">
-                <p style="color: white; margin: 0; font-size: 0.85rem; font-weight: 600;">🔗 Connected to: {st.session_state.current_provider}</p>
-            </div>
-        """, unsafe_allow_html=True)
+        with st.spinner("Testing Connection..."):
+            try:
+                # Actual connection test (v1.7.5-PRO)
+                test_llm = analyzer._get_llm(
+                    provider_key, 
+                    st.session_state.current_model, 
+                    st.session_state.current_temp, 
+                    100, # Tiny tokens for speed
+                    api_key=api_key_val, 
+                    azure_config=azure_config
+                )
+                # Quick handshake
+                test_resp = test_llm.invoke("Hi")
+                st.markdown(f"""
+                    <div style="background: rgba(34, 197, 94, 0.2); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px;">
+                        <p style="color: #4ade80; margin: 0; font-size: 0.85rem; font-weight: 700;">✅ Connection Successful</p>
+                        <p style="color: white; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.8;">Pulse established with {st.session_state.current_provider}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            except Exception as e:
+                err_code = "401" if "401" in str(e) or "invalid_api_key" in str(e).lower() else "Connection Error"
+                st.markdown(f"""
+                    <div style="background: rgba(239, 68, 68, 0.2); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px;">
+                        <p style="color: #f87171; margin: 0; font-size: 0.85rem; font-weight: 700;">❌ {err_code}</p>
+                        <p style="color: white; margin: 4px 0 0 0; font-size: 0.75rem; opacity: 0.8;">{str(e)[:100]}...</p>
+                    </div>
+                """, unsafe_allow_html=True)
 
 # Initialize Engine Variables at top level (accessible to all tabs)
 # Use session state to persist choices
