@@ -1,71 +1,72 @@
-# ☀️ AI Recruitment Intelligence Portal - User Guide
+# ☀️ BHADRADRI Technologies Inc | User Guide (v1.7.5-PRO)
 
-Welcome to the **Bhadradri Technology Inc.** AI Recruitment Intelligence Portal. This specialized platform leverages advanced Large Language Models (LLMs) to automate and enhance the candidate screening and ranking process.
-
----
-
-## 🚀 Getting Started
-
-### 1. Secure Login
-Access the portal by entering your authorized production password. The portal is protected to ensure candidate data privacy and secure engine configuration.
-
-### 2. Sidebar Navigation
-*   **Logo & Home**: Your central branding point.
-*   **🚪 Logout**: Securely exit the session and clear temporary data.
-*   **🧼 Clear Cache**: Refresh the AI engine resources.
-*   **🔥 Health Check**: Verify connection status with the active AI Provider.
+Welcome to the **Bhadradri Technologies Inc.** Recruitment Intelligence Portal. This enterprise-grade platform leverages state-of-the-art AI to transform how you assess, rank, and engage with top-tier talent.
 
 ---
 
-## 📄 Main Features & Tabs
-
-### 1. Single Resume Evaluation
-Use this tab to perform a deep-dive analysis into an individual candidate.
-- **How to use**: 
-    1. Paste the **Job Description** (JD) in the text area.
-    2. Upload the candidate's **Resume** (PDF or DOCX).
-    3. Click **"Analyze Resume"**.
-- **Results**: You will receive a **Match Confidence Percentage**, a **Predicted Rank**, an **Executive Summary**, a detailed **Skill Gap Analysis** (Matched vs. Missing), and **AI-Generated Interview Questions**.
-
-### 2. Batch Candidate Ranking
-Screen hundreds of candidates in minutes.
-- **How to use**:
-    1. Paste the **Job Description**.
-    2. Upload **Multiple Resumes** at once.
-    3. Click **"Rank All Candidates"**.
-- **Results**: A ranked Table and **Analytics Chart** showing which candidates match your requirements best, allowing for instant shortlisting.
-
-### 3. Evaluation History
-Keep track of your current session's work.
-- **Features**: Browse through a list of all analyzed candidates, viewing their scores and ranks at a glance. Select any record and click **"View Details"** to revisit the full AI report.
-
-### 4. ☀️ Recruitment ChatBot
-An interactive AI assistant dedicated to your hiring needs.
-- **Features**: Ask questions about specific candidates, request advice on job description drafting, or seek help with recruitment strategies. The chatbot remembers your conversation history for context-aware assistance.
+## � System Access
+Access the platform via the **Security Gateway**.
+- **Login**: Enter your authorized **Access Key** into the minimal yellow security badge.
+- **Visual Cues**: Click the **� Login** button to enter. The system uses a high-security deterministic engine optimized for accuracy.
 
 ---
 
-## ⚙️ Intelligence Control Center (Admin Settings)
+## � Core Features Matrix
 
-Located in the final tab, this section allows you to manage the "Brain" of the application. **Note: This section is password protected.**
+### 1. 📄 Single Resume Evaluation
+Perfect for deep-diving into high-priority candidates.
+- **Workflow**: 
+    - Paste your **Job Description** (the more detailed, the better).
+    - Upload a **PDF or DOCX** resume.
+    - Click **Start AI Analysis**.
+- **Output**: You receive a **Match Percentage**, **Fit Status** (e.g., "Top Tier"), and an **Executive Summary**.
+- **Deep Insights**: Explore the automatically generated **Skill Gap Analysis** and **Matched Skills** list.
 
-### AI Provider Choice
-Choose between various industry-leading providers:
-- **Ollama (Local PC)**: For 100% private, local processing (No subscription needed).
-- **Groq/OpenAI/Gemini/DeepSeek**: For high-speed Cloud-based intelligence.
-- **Azure OpenAI**: Enterprise-grade integration.
+### 2. 👥 Batch Candidate Ranking
+Screen hundreds of profiles in a single click.
+- **Workflow**: Upload multiple resumes simultaneously against one Job Description.
+- **Analytics**: View a categorized **Ranking Table** and a **Data Visualization Chart** that instantly surfaces the best matches for your role.
 
-### Engine Tuning
-- **Model Selection**: Choose specific models (e.g., GPT-4o, Llama 3.2).
-- **Creativity (Temperature)**: Higher values make the AI more "creative," lower values make it more consistent and factual.
-- **Max Tokens**: Control the length of the AI's response.
+### 3. 📜 History Vault
+Your searchable archive of all candidate interactions.
+- Re-access any previous analysis from the current session.
+- Click **View Full Report** on any history item to see the detailed evaluation again.
+
+### 4. 💬 Expert AI (Chat)
+Your dedicated recruitment consultant available 24/7.
+- Ask questions like: *"Why did Candidate X score 85%?"* or *"Draft an email to invite Candidate Y for an interview."*
+- The AI maintains context across your session for smarter, more relevant advice.
 
 ---
 
-## 💡 Pro Tips for Best Results
-*   **Detailed JDs**: The more detailed your job description, the more accurate the Skill Gap analysis will be.
-*   **Ollama for Privacy**: Use Ollama if you are processing sensitive data locally on your machine.
-*   **Session Reset**: If you change AI providers, it's often good practice to use the **Clear Cache** tool in the sidebar to ensure the new model initializes cleanly.
+## 🛠️ Admin Control & Tuning (Expert Mode)
+Located in the **Settings** tab (Admin Password required).
+
+### ☀️ Multi-Provider Support
+Switch between the world's most powerful AI brains:
+- **Groq/OpenAI/DeepSeek/Gemini**: Ultra-fast cloud processing.
+- **Sarvam AI**: Specialized localized intelligence.
+- **Ollama (Local)**: 100% private, offline candidate screening.
+- **Azure OpenAI (Copilot)**: Enterprise-scale stability.
+
+### ⚙️ Inference Parameters
+- **Max Token Response Limit**: Increased to **6000 tokens**. Higher limits allow for extremely detailed summaries of long CVs. *This setting is now persistent and will save automatically.*
+- **Deterministic Accuracy**: The system is fixed at **0.1 Temperature** to ensure "Hallucination-Free" screening. This provides consistent, factual results for every run.
 
 ---
-*© 2026 Bhadradri Technologies Inc. All Rights Reserved*
+
+## � Maintenance & Health
+Use the **Sidebar Tools** to keep the engine healthy:
+- **🔥 Health Check**: Instantly verify your connection to the AI provider. Look for the white status text in the indigo badge.
+- **🧼 Clear Cache**: Use this if you switch providers to ensure the new AI model initializes fresh.
+- **🚪 Logout**: Wipes session data and secures the terminal.
+
+---
+
+## 💡 Pro Tips for v1.7.5-PRO
+- **Groq for Speed**: Use Groq models for near-instant analysis of large batches.
+- **Key Cleaning**: The system now automatically cleans API keys (removes quotes/spaces), so you can copy-paste with confidence.
+- **Save Configuration**: Always click **"Save Key"** or **"Save Configuration"** in the Admin tab to ensure your settings persist across reloads.
+
+---
+*© 2026 BHADRADRI Technologies Inc. | Enterprise Recruitment Intelligence*
