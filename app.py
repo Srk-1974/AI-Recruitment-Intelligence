@@ -488,7 +488,11 @@ with st.sidebar:
         st.toast("Cache Cleared!")
     
     if st.button("🔥 Health Check", use_container_width=True):
-        st.info(f"Connected to: {st.session_state.current_provider}")
+        st.markdown(f"""
+            <div style="background: rgba(99, 102, 241, 0.2); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px;">
+                <p style="color: white; margin: 0; font-size: 0.85rem; font-weight: 600;">🔗 Connected to: {st.session_state.current_provider}</p>
+            </div>
+        """, unsafe_allow_html=True)
 
 # Initialize Engine Variables at top level (accessible to all tabs)
 # Use session state to persist choices
