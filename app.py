@@ -93,20 +93,21 @@ def check_password():
                     <div style="text-align: left;">
                         <h1 style="
                             margin: 0;
-                            font-size: 52px;
+                            font-size: 42px;
                             font-weight: 900;
                             color: #ffffff;
-                            letter-spacing: -2px;
+                            letter-spacing: -1.5px;
                             line-height: 1;
+                            text-transform: uppercase;
                         ">BHADRADRI</h1>
                         <p style="
-                            margin: 6px 0 0 0;
-                            font-size: 16px;
-                            color: rgba(255, 255, 255, 0.6);
-                            letter-spacing: 5px;
+                            margin: 4px 0 0 0;
+                            font-size: 14px;
+                            color: rgba(255, 255, 255, 0.7);
+                            letter-spacing: 2px;
                             font-weight: 600;
                             text-transform: uppercase;
-                        ">Intelligence Pro</p>
+                        ">Technologies Inc | Intelligence Pro</p>
                     </div>
                 </div>
             </div>
