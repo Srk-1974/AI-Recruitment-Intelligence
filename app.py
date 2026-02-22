@@ -118,16 +118,17 @@ def check_password():
     """, unsafe_allow_html=True)
 
     with st.container():
-        cols = st.columns([2, 1, 2])
+        cols = st.columns([1.2, 1, 1.2]) # Slightly wider for button breathing room
         with cols[1]:
             st.markdown("""
-                <div style="padding: 4px 8px; text-align: center; background: #facc15; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(250, 204, 21, 0.15);">
-                    <p style="color: #1e1b4b; font-size: 0.65rem; margin-bottom: 4px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3px;">Secure Authentication Required</p>
+                <div style="padding: 12px 15px; text-align: center; background: #facc15; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 8px 20px rgba(250, 204, 21, 0.2); margin-bottom: 10px;">
+                    <p style="color: #1e1b4b; font-size: 0.8rem; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">🛡️ Security Gateway</p>
+                    <p style="color: #1e1b4b; font-size: 0.65rem; margin-top: 2px; opacity: 0.7; font-weight: 600;">Authentication Required</p>
             """, unsafe_allow_html=True)
             
-            password = st.text_input("Access Key", type="password", placeholder="Enter key", label_visibility="collapsed")
+            password = st.text_input("Access Key", type="password", placeholder="Access Key", label_visibility="collapsed")
             
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
             
             c1, c2 = st.columns(2)
             with c1:
@@ -429,6 +430,31 @@ st.markdown("""
         border-radius: 16px;
         overflow: hidden;
         border: 1px solid #f1f5f9;
+    }
+
+    /* Premium Login Button Styling */
+    div.stButton > button {
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Primary Login Button */
+    [data-testid="stSidebar"] div.stButton > button,
+    div[data-testid="column"] div.stButton > button:first-child {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
+    }
+
+    div[data-testid="column"] div.stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4) !important;
+        filter: brightness(1.1) !important;
     }
     </style>
     """, unsafe_allow_html=True)
