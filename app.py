@@ -118,11 +118,11 @@ def check_password():
     """, unsafe_allow_html=True)
 
     with st.container():
-        cols = st.columns([1.5, 1, 1.5])
+        cols = st.columns([2, 1, 2])
         with cols[1]:
             st.markdown("""
-                <div style="padding: 10px 15px; text-align: center; background: #facc15; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 5px 15px rgba(250, 204, 21, 0.2);">
-                    <p style="color: #1e1b4b; font-size: 0.75rem; margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Secure Authentication Required</p>
+                <div style="padding: 4px 8px; text-align: center; background: #facc15; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(250, 204, 21, 0.15);">
+                    <p style="color: #1e1b4b; font-size: 0.65rem; margin-bottom: 4px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3px;">Secure Authentication Required</p>
             """, unsafe_allow_html=True)
             
             password = st.text_input("Access Key", type="password", placeholder="Enter key", label_visibility="collapsed")
