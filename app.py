@@ -121,9 +121,9 @@ def check_password():
         cols = st.columns([1.2, 1, 1.2]) # Slightly wider for button breathing room
         with cols[1]:
             st.markdown("""
-                <div style="padding: 12px 15px; text-align: center; background: #facc15; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 8px 20px rgba(250, 204, 21, 0.2); margin-bottom: 10px;">
-                    <p style="color: #1e1b4b; font-size: 0.8rem; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">🛡️ Security Gateway</p>
-                    <p style="color: #1e1b4b; font-size: 0.65rem; margin-top: 2px; opacity: 0.7; font-weight: 600;">Authentication Required</p>
+                <div style="padding: 4px 10px; text-align: center; background: #facc15; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15); margin-bottom: 8px;">
+                    <p style="color: #1e1b4b; font-size: 0.7rem; margin: 0; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">🛡️ Security Gateway</p>
+                    <p style="color: #1e1b4b; font-size: 0.55rem; margin-top: 0px; opacity: 0.8; font-weight: 700;">Verified Access Only</p>
             """, unsafe_allow_html=True)
             
             password = st.text_input("Access Key", type="password", placeholder="Access Key", label_visibility="collapsed")
